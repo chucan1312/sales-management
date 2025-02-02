@@ -1,10 +1,16 @@
-# My Personal Project
+# CPSC 210 Personal Project: Sales Management Application
 
-## A subtitle
+## Overview
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
+This will be an application for small businesses to keep track of their store's sales and inventory. It can let you enter products' information such as their names, selling prices, most recent unit costs. It can also keep track of customers' purchases or returns, and method of payment. 
+This project is of interest to me because my parents own a business, and they had their internal sales management software written around 15 years ago/ I wanted to try working on this project to get a better idea of what a sales management application would be like, before tackling the very outdated software my parents are using.
 
-An example of text with **bold** and *italic* fonts.  
+## User stories
+
+- As a user, I want to be able to add a product to the store's inventory and specify the name, quantity, selling price, and the recent import cost (per unit)
+- As a user, I want to be able to add a purchase to the purchase record and specify the date, sold item(s), and method of payment
+- As a user, I want to be able to view the list of purchases with method of payment (by day)
+- As a user, I want to be able to look up an item's price by its name
+- As a user, I want to be able to change the products' quantities for restock
+- As a user, I want to get statistics on high to low demand products (by month or quarter)
+- As a user, I want to get statistics on frequently returned products
