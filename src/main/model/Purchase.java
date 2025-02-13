@@ -8,13 +8,13 @@ import java.util.Map;
 // actual amount paid by customer, a payment method and a payment review status 
 public class Purchase {
     private LocalDateTime dateTime;
-    private List<Map<Product, Integer>> purchasedProducts;
+    private Map<Product, Integer> purchasedProducts;
     private Double totalCost;
     private Double actualPaidAmount;
     private String paymentMethod;
     private Boolean reviewedStatus;
 
-    // EFFECTS: construct a new purchase with the amount paid, no prudcts or total cost
+    // EFFECTS: Construct a new purchase with the amount paid, no prudcts or total cost
     // given payment method, and a false payment status 
     public Purchase(Double actualPaidAmount, String paymentMethod) {
         // stub
@@ -22,13 +22,14 @@ public class Purchase {
 
     // REQUIRES: amount > 0, amount =< product.getQuantity()
     // MODIFIES: this, Product
-    // EFFECTS: add product with bought amount in a purchase, add up price into totalCost,
-    // and change the quantity of product
+    // EFFECTS: Add product with bought amount in a purchase, add up price into totalCost,
+    // and change the quantity of product accordingly. If product is already in purchasedProducts;
+    // addProduct replace the original amount with the new one 
     public void addProduct(Product product, int amount) {
         // stub
     }
 
-    // EFFECTS: return the difference between actualPaidAmount and totalCost;
+    // EFFECTS: Return the difference between actualPaidAmount and totalCost;
     public Double difference() {
         return -1.1; // stub
     }
@@ -37,7 +38,7 @@ public class Purchase {
         return dateTime;
     }
 
-    public List<Map<Product, Integer>> getPurchasedProducts() {
+    public Map<Product, Integer> getPurchasedProducts() {
         return purchasedProducts;
     }
 
