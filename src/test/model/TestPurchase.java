@@ -13,10 +13,12 @@ public class TestPurchase {
     @BeforeEach
     void runBefore() {
         pc = new Purchase((double) 15, "Cash");
-        p1 = new Product("cake", "123", 15.5);
-        p2 = new Product("pie", "456", 13.5);
+        p1 = new Product("cake", "123", 15.1);
+        p2 = new Product("pie", "456", 13.2);
         p1.restock(10);
         p2.restock(5);
+        p1.setSellingPrice(15.5);
+        p2.setSellingPrice(13.5);
     }
 
     @Test
@@ -54,6 +56,20 @@ public class TestPurchase {
         assertEquals(3, pc.getPurchasedProducts().get(p1));
         assertEquals(15.5 * 3, pc.getTotalCost());
         assertEquals(7, p1.getQuantity());
+
+        pc.addProduct(p1, 3);
+        assertEquals(1, pc.getPurchasedProducts().size());
+        assertTrue(pc.getPurchasedProducts().containsKey(p1));
+        assertEquals(3, pc.getPurchasedProducts().get(p1));
+        assertEquals(15.5 * 3, pc.getTotalCost());
+        assertEquals(7, p1.getQuantity());
+
+        pc.addProduct(p1, 2);
+        assertEquals(1, pc.getPurchasedProducts().size());
+        assertTrue(pc.getPurchasedProducts().containsKey(p1));
+        assertEquals(2, pc.getPurchasedProducts().get(p1));
+        assertEquals(15.5 * 2, pc.getTotalCost());
+        assertEquals(8, p1.getQuantity());
     }
 
     @Test
@@ -67,7 +83,7 @@ public class TestPurchase {
         assertEquals(1, pc.getPurchasedProducts().get(p2));
         assertEquals(15.5 * 2 + 13.5, pc.getTotalCost());
         assertEquals(8, p1.getQuantity());
-        assertEquals(4, p1.getQuantity());
+        assertEquals(4, p2.getQuantity());
     }
 
     @Test
@@ -77,7 +93,7 @@ public class TestPurchase {
         assertTrue(pc.getPurchasedProducts().containsKey(p2));
         assertEquals(5, pc.getPurchasedProducts().get(p2));
         assertEquals(13.5 * 5, pc.getTotalCost());
-        assertEquals(0, p1.getQuantity());
+        assertEquals(0, p2.getQuantity());
     }
 
     @Test
@@ -94,7 +110,8 @@ public class TestPurchase {
 
     @Test
     void testDifferenceEqualTo() {
-        Product p3 = new Product("", "", 7.5);
+        Product p3 = new Product("", "", 7.1);
+        p3.setSellingPrice(7.5);
         pc.addProduct(p3, 2);
         assertEquals(0, pc.difference());
     }
