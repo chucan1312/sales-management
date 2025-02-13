@@ -34,6 +34,18 @@ public class Purchase {
         return -1.1; // stub
     }
 
+    // MODIFIES: this
+    // EFFECTS: mark a purchase as reviewed
+    public void reviewPurchase() {
+        // stub
+    }
+
+    // MODIFIES: this
+    // EFFECTS: mark a purchase as unreviewed
+    public void unreviewPurchase() {
+        // stubstub
+    }
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }

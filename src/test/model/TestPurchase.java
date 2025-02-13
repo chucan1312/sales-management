@@ -26,6 +26,7 @@ public class TestPurchase {
         assertEquals(0, pc.getTotalCost());
         assertEquals((double) 15, pc.getActualPaidAmount());
         assertEquals("Cash", pc.getPaymentMethod());
+        assertFalse(pc.getReviewedStatus());
     }
 
     @Test
@@ -98,4 +99,12 @@ public class TestPurchase {
         assertEquals(0, pc.difference());
     }
 
+    @Test
+    void testReview() {
+        pc.reviewPurchase();
+        assertTrue(pc.getReviewedStatus());
+
+        pc.unreviewPurchase();
+        assertFalse(pc.getReviewedStatus());
+    }
 }
