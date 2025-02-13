@@ -69,7 +69,7 @@ public class TestProduct {
         p.sell(2);
 
         assertEquals(8, p.getQuantity());
-        assertEquals(10, p.getQuantity());
+        assertEquals(10, p2.getQuantity());
     }
 
     @Test
@@ -79,5 +79,5 @@ public class TestProduct {
         assertEquals(15.99, p.getSellingPrice());
         assertEquals(14.5, p.getUnitPrice());
     }
-    
+
 }
