@@ -10,21 +10,25 @@ public class Product {
 
     // EFFECTS: constructs a new product with given name, id and original unit price, no selling price or quantity
     public Product (String name, String id, Double unitPrice) {
-        // stub
+        this.name = name;
+        this.id = id;
+        sellingPrice = (double) 0;
+        this.unitPrice = unitPrice;
+        quantity = 0;
     }
 
     // REQUIRES: amount > 0
     // MODIFIES: this
     // EFFECTS: add amount to quantity
     public void restock(int amount) {
-        // stub
+        quantity += amount;
     }
 
-    // REQUIRES: amount > 0 
+    // REQUIRES: amount > 0, amount <= quantity 
     // MODIFIES: this
     // EFFECTS: subtract amount from quantity
     public void sell(int amount) {
-        // stub
+        quantity -= amount;
     }
 
     // REQUIRES: sellingPrice > 0
