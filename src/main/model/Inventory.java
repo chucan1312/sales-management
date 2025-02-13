@@ -17,9 +17,15 @@ public class Inventory {
         // stub
     }
 
-    // EFFECTS: return the selling price of a product when given an id,
+    // MODIFIES: this
+    // EFFECTS: remove a product, given its id
+    public void removeProduct(String id) {
+        // stub
+    }
+
+    // EFFECTS: return a product when given an id,
     // return null if not found
-    public Product findProductWithID(String id) {
+    public Product findProductWithId(String id) {
         return null; // stub
     }
 
@@ -27,6 +33,12 @@ public class Inventory {
     // return empty list if no products' name contain the search term (case insensitive)
     public List<Product> findProductWithName(String searchTerm) {
         return null; // stub
+    }
+
+    // MODIFIES: this
+    // EFFECTS: clear products list
+    public void clearInventory() {
+        //stub
     }
 
     public List<Product> getProducts() {
