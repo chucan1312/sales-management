@@ -13,20 +13,6 @@ public class Product {
         // stub
     }
 
-    // REQUIRES: sellingPrice > 0
-    // MODIFIES: this
-    // EFFECTS: change sellingPrice
-    public void setSellingPrice(Double sellingPrice) {
-        // stub
-    }
-
-    //REQUIRES: unitPrice > 0
-    // MODIFIES: this
-    // EFFECTS: change unitPrice
-    public void setUnitPrice(Double unitPrice) {
-        // stub
-    }
-
     // REQUIRES: amount > 0
     // MODIFIES: this
     // EFFECTS: add amount to quantity
@@ -39,6 +25,16 @@ public class Product {
     // EFFECTS: subtract amount from quantity
     public void sell(int amount) {
         // stub
+    }
+
+    // REQUIRES: sellingPrice > 0
+    public void setSellingPrice(Double sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
+
+    //REQUIRES: unitPrice > 0
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public int getQuantity() {
