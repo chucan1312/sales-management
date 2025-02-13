@@ -1,7 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 // Represent one single purchase with time, a list of products purchased, total calculated cost of those products, 
@@ -15,9 +15,14 @@ public class Purchase {
     private Boolean reviewedStatus;
 
     // EFFECTS: Construct a new purchase with the amount paid, no prudcts or total cost
-    // given payment method, and a false payment status 
+    // given payment method, and a false reviewed status 
     public Purchase(Double actualPaidAmount, String paymentMethod) {
-        // stub
+        dateTime = LocalDateTime.now();
+        purchasedProducts = new HashMap<Product,Integer>();
+        totalCost = (double) 0;
+        this.actualPaidAmount = actualPaidAmount;
+        this.paymentMethod = paymentMethod;
+        reviewedStatus = false;
     }
 
     // REQUIRES: amount > 0, amount =< product.getQuantity()
@@ -26,24 +31,41 @@ public class Purchase {
     // and change the quantity of product accordingly. If product is already in purchasedProducts;
     // addProduct replace the original amount with the new one 
     public void addProduct(Product product, int amount) {
-        // stub
+        if (!purchasedProducts.containsKey(product)) {
+            purchasedProducts.put(product, amount);
+            totalCost += product.getSellingPrice() * (double) amount;
+            product.sell(amount);
+        }
+        else {
+            Integer originalAmount = purchasedProducts.get(product);
+            purchasedProducts.put(product, amount);
+            totalCost -= product.getSellingPrice() * (double) originalAmount;
+            totalCost += product.getSellingPrice() * (double) amount;
+            Integer mistake = amount - originalAmount;
+            if (mistake > 0) {
+                product.sell(amount - originalAmount);
+            }
+            else {
+                product.restock(originalAmount - amount);
+            }
+        }
     }
 
     // EFFECTS: Return the difference between actualPaidAmount and totalCost;
     public Double difference() {
-        return -1.1; // stub
+        return actualPaidAmount - totalCost;
     }
 
     // MODIFIES: this
     // EFFECTS: mark a purchase as reviewed
     public void reviewPurchase() {
-        // stub
+        reviewedStatus = true;
     }
 
     // MODIFIES: this
     // EFFECTS: mark a purchase as unreviewed
     public void unreviewPurchase() {
-        // stubstub
+        reviewedStatus = false;
     }
 
     public LocalDateTime getDateTime() {
