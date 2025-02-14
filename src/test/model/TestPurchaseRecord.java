@@ -153,8 +153,8 @@ public class TestPurchaseRecord {
     @Test
     void testGetProfitOnePurchaseOneProduct() {
         pc1.setDate(2025,1,1);
-        pr.addPurchase(pc1);
         pc1.addProduct(p1, 5);
+        pr.addPurchase(pc1);
         LocalDate date1 = LocalDate.of(2025,1,1);
         assertEquals(7.5, pr.getProfit(date1, date1));
 
@@ -179,9 +179,10 @@ public class TestPurchaseRecord {
         pc1.setDate(2025,1,2);
         pc1.addProduct(p1,2);
         pc1.addProduct(p2,5);
+        pr.addPurchase(pc1);
         LocalDate date1 = LocalDate.of(2025,1,1);
         LocalDate date2 = LocalDate.of(2025,1,3);
-        assertEquals((double) 5, pr.getProfit(date1, date2));
+        assertEquals(5.0, pr.getProfit(date1, date2));
     }
 
     @Test
@@ -189,7 +190,7 @@ public class TestPurchaseRecord {
         pc1.setDate(2025,1,3);
         pc3.setDate(2025,2,1);
         pr.addPurchase(pc1);
-        pr.addPurchase(pc2);
+        pr.addPurchase(pc3);
         pc1.addProduct(p1,4);
         pc3.addProduct(p2,10);
         LocalDate date1 = LocalDate.of(2025,1,1);
