@@ -92,4 +92,8 @@ public class Purchase {
         return reviewedStatus;
     }
 
+    public void setDate(Integer year, Integer month, Integer day) {
+        date = LocalDate.of(year, month, day);
+    }
+    
 }
