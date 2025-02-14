@@ -84,9 +84,15 @@ public class TestPurchaseRecord {
         pr.addPurchase(pc1);
         LocalDate date1 = LocalDate.of(2025,1,2);
         LocalDate date2 = LocalDate.of(2025,1,5);
-        List<Purchase> result = pr.getPurchasesBetween(date1, date2);
-        assertEquals(0, result.size());
-        assertFalse(result.contains(pc1));
+        List<Purchase> result1 = pr.getPurchasesBetween(date1, date2);
+        assertEquals(0, result1.size());
+        assertFalse(result1.contains(pc1));
+
+        LocalDate date3 = LocalDate.of(2024,1,1);
+        LocalDate date4 = LocalDate.of(2024,11,1);
+        List<Purchase> result2 = pr.getPurchasesBetween(date3, date4);
+        assertEquals(0, result2.size());
+        assertFalse(result1.contains(pc1));
     }
 
     @Test
@@ -162,6 +168,12 @@ public class TestPurchaseRecord {
         LocalDate date3 = LocalDate.of(2024,12,31);
         assertEquals(7.5, pr.getProfit(date1, date2));
         assertEquals(7.5, pr.getProfit(date3, date1));
+        assertEquals(7.5, pr.getProfit(date3, date2));
+        assertEquals(0, pr.getProfit(date2, date3));
+        LocalDate date4 = LocalDate.of(2024,12,13);
+        LocalDate date5 = LocalDate.of(2025,2,14);
+        assertEquals(0, pr.getProfit(date2, date5));
+        assertEquals(0, pr.getProfit(date4, date3));
     }
 
     @Test
