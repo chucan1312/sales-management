@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +25,6 @@ public class TestPurchase {
 
     @Test
     void testConstructor() {
-        // TODO: How to test the dateTime field?
         assertTrue(pc.getPurchasedProducts().isEmpty());
         assertEquals(0, pc.getTotalCost());
         assertEquals((double) 15, pc.getActualPaidAmount());

@@ -1,13 +1,13 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
 // Represent one single purchase with time, a list of products purchased, total calculated cost of those products, 
 // actual amount paid by customer, a payment method and a payment review status 
 public class Purchase {
-    private LocalDateTime dateTime;
+    private LocalDate date;
     private Map<Product, Integer> purchasedProducts;
     private Double totalCost;
     private Double actualPaidAmount;
@@ -17,7 +17,7 @@ public class Purchase {
     // EFFECTS: Construct a new purchase with the amount paid, no prudcts or total cost
     // given payment method, and a false reviewed status 
     public Purchase(Double actualPaidAmount, String paymentMethod) {
-        dateTime = LocalDateTime.now();
+        date = LocalDate.now();
         purchasedProducts = new HashMap<Product,Integer>();
         totalCost = (double) 0;
         this.actualPaidAmount = actualPaidAmount;
@@ -68,8 +68,8 @@ public class Purchase {
         reviewedStatus = false;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
     public Map<Product, Integer> getPurchasedProducts() {
