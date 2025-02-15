@@ -16,7 +16,7 @@ public class Inventory {
     // return null if not found
     public Product findProductWithId(String id) {
         for (Product product : products) {
-            if (product.getId() == id) {
+            if (product.getId().equals(id)) {
                 return product;
             }
         }
@@ -37,14 +37,14 @@ public class Inventory {
     public void removeProduct(String id) {
         List<Product> listToRemove = new ArrayList<Product>();
         for (Product product : products) {
-            if (product.getId() == id) {
+            if (product.getId().equals(id)) {
                 listToRemove.add(product);
             }
         }
         products.removeIf(p -> listToRemove.contains(p));
     }
 
-    // REQUIRES: searcTerm != ""
+    // REQUIRES: searchTerm != ""
     // EFFECTS: return a list of products with names containing the search term,
     // return empty list if no products' name contain the search term (case insensitive)
     public List<Product> findProductWithName(String searchTerm) {
