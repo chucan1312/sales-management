@@ -72,9 +72,9 @@ public class SalesManagement {
             case "n":
                 findProductWithName();
                 break;
-            // case "u":
-            //     updateProduct();
-            //     break;
+            case "u":
+                updateProduct();
+                break;
             // case "r":
             //     addPurchase();
             //     break;
@@ -153,82 +153,53 @@ public class SalesManagement {
     public void findProductWithId() {
         printTop();
         System.out.println("║                          FIND PRODUCT BY ID                        ║");
-        printDivider();
-        
-        System.out.println("║ [i]: look up a product by id                                       ║");
-        System.out.println("║ [q]: return to the main menu                                       ║");
         printBottom();
-
-        String input = this.scanner.nextLine();
-        while (!input.equals("q")) {
-            switch (input) {
-                case "i":
-                    System.out.println(" Please enter the product's ID: ");
-                    String typedId = this.scanner.nextLine();
-                    Product p = this.inventory.findProductWithId(typedId);
-                    if (p == null) {
-                        System.out.println(" Error: No product was found. Please try again.");
-                    }
-                    else {
-                        printTop();
-                        displayOneProduct(p);
-                    }
-                    break;
-                default: 
-                    System.out.println(" Invalid option inputted. Please try again.");
-            } 
-            input = this.scanner.nextLine();
+        
+        System.out.println(" Please enter the product's ID: ");
+        String typedId = this.scanner.nextLine();
+        Product p = this.inventory.findProductWithId(typedId);
+        if (p == null) {
+            System.out.println(" Error: No product was found. Please try again.");
         }
+        else {
+            printTop();
+            displayOneProduct(p);
+        }   
     }
 
     // EFFECTS: display the products' information given a search term, one product at a time
     public void findProductWithName() {
         printTop();
         System.out.println("║                         FIND PRODUCT BY NAME                       ║");
-        printDivider();
-
-        System.out.println("║ [n]: look up a product by search term                              ║");
-        System.out.println("║ [q]: return to the main menu                                       ║");
         printBottom();
 
-        String input = this.scanner.nextLine();
-        if (!input.equals("q")) {
-            handleFindProductCommands(input);
-        }    
-    }
-
-    public void handleFindProductCommands(String input) {
-        switch (input) {
-            case "n":
-                System.out.println(" Please enter the search term: ");
-                String searchTerm = this.scanner.nextLine();
-                List<Product> products = inventory.findProductWithName(searchTerm);
-                if (products.isEmpty()) {
-                    System.out.println(" Error: No product was found. Please try again.");
-                    return;
-                }
-                else {
-                    String command = "";
-                    while (!command.equals("q")) {
-                        printTop();
-                        System.out.println("║ [n]: move to the next product                                      ║");
-                        System.out.println("║ [p]: move to the previous product                                  ║");
-                        System.out.println("║ [q]: return to the main menu                                       ║");
-                        printDivider();
-                        Product currentProduct = products.get(currentIndex);
-                        displayOneProduct(currentProduct);
-                        command = this.scanner.nextLine();
-                        handleTraverseProductsList(command, products);
-                    }
-                    currentIndex = 0;
-                }
-                return;
-            default:
-                System.out.println(" Invalid option inputted. Please try again.");
+        
+        System.out.println(" Please enter the search term: ");
+        String searchTerm = this.scanner.nextLine();
+        List<Product> products = inventory.findProductWithName(searchTerm);
+        if (products.isEmpty()) {
+            System.out.println(" Error: No product was found. Please try again.");
+            return;
+        }
+        else {
+            String command = "";
+            while (!command.equals("q")) {
+                printTop();
+                System.out.println("║ [n]: move to the next product                                      ║");
+                System.out.println("║ [p]: move to the previous product                                  ║");
+                System.out.println("║ [q]: return to the main menu                                       ║");
+                printDivider();
+                Product currentProduct = products.get(currentIndex);
+                displayOneProduct(currentProduct);
+                command = this.scanner.nextLine();
+                handleTraverseProductsList(command, products);
+            }
+            currentIndex = 0;
         }
     }
     
-    // EFFECTS: process the user's input after searching for a list of products by search term
+    // MODIFIES: this
+    // EFFECTS: process the user's input by modifying the current card index or exit the menu
     public void handleTraverseProductsList(String command, List<Product> products) {
         switch (command) {
             case "n":
@@ -267,6 +238,14 @@ public class SalesManagement {
         System.out.println("║ Product's unit price: " + unitPrice + " ".repeat(BOX_LENGTH - 23 - unitPrice.length()) + "║");
         System.out.println("║ Product's quantity: " + quantity + " ".repeat(BOX_LENGTH - 21 - quantity.length()) + "║");
         printBottom();
+    }
+
+    // EFFECTS: change a product's information given the id
+    public void updateProduct() {
+        printTop();
+        System.out.println("║                    UPDATE PRODUCT'S INFORMATION                    ║");
+        printDivider();
+
     }
 
     // EFFECTS: prints out the top line of the box
