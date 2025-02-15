@@ -1,0 +1,286 @@
+package ui;
+
+import java.util.List;
+import java.util.Scanner;
+
+import model.*;
+
+// A sales management application that allows user to track products and purchases
+public class SalesManagement {
+    private Inventory inventory;
+    private PurchaseRecord purchaseRecord;
+    private Integer currentIndex;
+    private static final Integer BOX_LENGTH = 68;
+
+    private Scanner scanner;
+    private boolean isProgramRunning;
+
+    // EFFECTS: creates an instance of the SalesManagement console ui application
+    public SalesManagement() {
+        init();
+
+        System.out.println("Welcome to the Sales Management app!");
+
+        while(this.isProgramRunning) {
+            handleMenu();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes the application with the starting state
+    public void init() {
+        this.inventory = new Inventory();
+        this.purchaseRecord = new PurchaseRecord();
+        this.currentIndex = 0;
+        this.scanner = new Scanner(System.in);
+        this.isProgramRunning = true;
+    }
+
+    // EFFECTS: display and processes inputs for the main menu
+    public void handleMenu() {
+        displayMenu();
+        String input = this.scanner.nextLine();
+        processMenuCommands(input);
+    }
+
+    // EFFECTS: display a list of commands that can be used in the main menu
+    public void displayMenu() {
+        printTop();
+        System.out.println("║                               MAIN MENU                            ║");
+        printDivider();
+        System.out.println("║ [a]: add a product to inventory                                    ║");
+        System.out.println("║ [i]: look up a product by id                                       ║");
+        System.out.println("║ [n]: look up products by search term                               ║");
+        System.out.println("║ [u]: update a product in inventory                                 ║");
+        System.out.println("║ [r]: make and record a new purchase                                ║");
+        System.out.println("║ [p]: view all purchases from date range                            ║");
+        System.out.println("║ [v]: view unreviewed purchases with selected of payment in one day ║");
+        System.out.println("║ [f]: get profit from date range                                    ║");
+        System.out.println("║ [q]: exit the application                                          ║");
+        printBottom();
+    }
+
+    // EFFECTS: process the user's input in the main menu
+    public void processMenuCommands(String input) {
+        switch (input) {
+            case "a":
+                addProduct();
+                break;
+            case "i": 
+                findProductWithId();
+                break;
+            case "n":
+                findProductWithName();
+                break;
+            // case "u":
+            //     updateProduct();
+            //     break;
+            // case "r":
+            //     addPurchase();
+            //     break;
+            // case "p":
+            //     getPurchasesBetween();
+            //     break;
+            // case "v":
+            //     getOneDayPurchasesMethod();
+            //     break;
+            // case "f":
+            //     getProfit();
+            //     break;
+            case "q":
+                this.isProgramRunning = false;
+                break;
+            default:
+                System.out.println(" Invalid option inputted. Please try again. ");
+        }
+    }
+
+    // EFFECTS: create a new product and add to inventory
+    private void addProduct() {
+        printTop();
+        System.out.println("║                              ADD PRODUCT                           ║");
+        printBottom();
+        
+        System.out.println("Please enter the product's name: ");
+        String name = this.scanner.nextLine();
+        
+        System.out.println("Please enter the product's ID: ");
+        String id = this.scanner.nextLine();
+        for (Product p : inventory.getProducts()) {
+            if (p.getId().equals(id)) {
+                System.out.println(" ID already existed. Please try again.");
+                return;
+            }
+        }
+
+        System.out.println(" Please enter the product's unit price: ");
+        String unitPrice = this.scanner.nextLine();
+
+        Product p = new Product(name, id, Double.valueOf(unitPrice));
+
+        System.out.println(" Would you like to specify the selling price and quantity?");
+        System.out.println(" [y]: yes");
+        System.out.println(" [n]: no");
+        String input = this.scanner.nextLine();
+        processAddProductCommand(input, p);
+        
+        if (input.equals("y") || input.equals("n")) {
+            inventory.addProduct(p);
+            System.out.println(" Product successfully added to inventory!");
+        }
+    }
+
+    // EFFECTS: process the user's input on the Add Product menu
+    public void processAddProductCommand(String input, Product product) {
+        switch(input) {
+            case "y":
+                System.out.println(" Please enter the product's selling price: ");
+                String sellingPrice = this.scanner.nextLine();
+                product.setSellingPrice(Double.valueOf(sellingPrice));
+
+                System.out.println(" Please enter the product's quantity: ");
+                String quantity = this.scanner.nextLine();
+                product.restock(Integer.valueOf(quantity));
+                break;
+            case "n":
+                break;
+            default:
+                System.out.println(" Invalid option inputted. Please try again. ");
+        }
+    }
+
+    // EFFECTS: display the product's information given their id
+    public void findProductWithId() {
+        printTop();
+        System.out.println("║                          FIND PRODUCT BY ID                        ║");
+        printDivider();
+        
+        System.out.println("║ [i]: look up a product by id                                       ║");
+        System.out.println("║ [q]: return to the main menu                                       ║");
+        printBottom();
+
+        String input = this.scanner.nextLine();
+        while (!input.equals("q")) {
+            switch (input) {
+                case "i":
+                    System.out.println(" Please enter the product's ID: ");
+                    String typedId = this.scanner.nextLine();
+                    Product p = this.inventory.findProductWithId(typedId);
+                    if (p == null) {
+                        System.out.println(" Error: No product was found. Please try again.");
+                    }
+                    else {
+                        printTop();
+                        displayOneProduct(p);
+                    }
+                    break;
+                default: 
+                    System.out.println(" Invalid option inputted. Please try again.");
+            } 
+            input = this.scanner.nextLine();
+        }
+    }
+
+    // EFFECTS: display the products' information given a search term, one product at a time
+    public void findProductWithName() {
+        printTop();
+        System.out.println("║                         FIND PRODUCT BY NAME                       ║");
+        printDivider();
+
+        System.out.println("║ [n]: look up a product by search term                              ║");
+        System.out.println("║ [q]: return to the main menu                                       ║");
+        printBottom();
+
+        String input = this.scanner.nextLine();
+        if (!input.equals("q")) {
+            handleFindProductCommands(input);
+        }    
+    }
+
+    public void handleFindProductCommands(String input) {
+        switch (input) {
+            case "n":
+                System.out.println(" Please enter the search term: ");
+                String searchTerm = this.scanner.nextLine();
+                List<Product> products = inventory.findProductWithName(searchTerm);
+                if (products.isEmpty()) {
+                    System.out.println(" Error: No product was found. Please try again.");
+                    return;
+                }
+                else {
+                    String command = "";
+                    while (!command.equals("q")) {
+                        printTop();
+                        System.out.println("║ [n]: move to the next product                                      ║");
+                        System.out.println("║ [p]: move to the previous product                                  ║");
+                        System.out.println("║ [q]: return to the main menu                                       ║");
+                        printDivider();
+                        Product currentProduct = products.get(currentIndex);
+                        displayOneProduct(currentProduct);
+                        command = this.scanner.nextLine();
+                        handleTraverseProductsList(command, products);
+                    }
+                    currentIndex = 0;
+                }
+                return;
+            default:
+                System.out.println(" Invalid option inputted. Please try again.");
+        }
+    }
+    
+    // EFFECTS: process the user's input after searching for a list of products by search term
+    public void handleTraverseProductsList(String command, List<Product> products) {
+        switch (command) {
+            case "n":
+                if (currentIndex >= products.size() - 1) {
+                    System.out.println(" Error: No more new products to display.");
+                }
+                else {
+                    currentIndex++;
+                }
+                break;
+            case "p":
+                if (currentIndex <= 0) {
+                    System.out.println(" Error: No more previous products to display.");
+                }
+                else {
+                    currentIndex--;
+                }
+                break;
+            case "q":
+                return;
+            default: 
+                System.out.println(" Invalid option inputted. Please try again.");
+        }
+    }
+    // EFFECTS: display one product's information
+    public void displayOneProduct(Product p) {
+        String name = p.getName();
+        String id = p.getId();
+        String sellingPrice = p.getSellingPrice().toString();
+        String unitPrice = p.getUnitPrice().toString();
+        String quantity = Integer.toString(p.getQuantity());
+
+        System.out.println("║ Product's name: " + name + " ".repeat(BOX_LENGTH - 17 - name.length()) + "║");
+        System.out.println("║ Product's ID: " + id + " ".repeat(BOX_LENGTH - 15 - id.length()) + "║");
+        System.out.println("║ Product's selling price: " + sellingPrice + " ".repeat(BOX_LENGTH - 26 - sellingPrice.length()) + "║");
+        System.out.println("║ Product's unit price: " + unitPrice + " ".repeat(BOX_LENGTH - 23 - unitPrice.length()) + "║");
+        System.out.println("║ Product's quantity: " + quantity + " ".repeat(BOX_LENGTH - 21 - quantity.length()) + "║");
+        printBottom();
+    }
+
+    // EFFECTS: prints out the top line of the box
+    private void printTop() {
+        System.out.println("╔════════════════════════════════════════════════════════════════════╗");
+    }
+
+    // EFFECTS: prints out the divider in the box
+    private void printDivider() {
+        System.out.println("╠════════════════════════════════════════════════════════════════════╣");
+    }
+    
+    // EFFECTS: prints out the bottom line of the box
+    private void printBottom() {
+        System.out.println("╚════════════════════════════════════════════════════════════════════╝");
+    }
+}
