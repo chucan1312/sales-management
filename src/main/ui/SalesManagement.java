@@ -75,9 +75,9 @@ public class SalesManagement {
             case "u":
                 updateProduct();
                 break;
-            // case "r":
-            //     addPurchase();
-            //     break;
+            case "r":
+                addPurchase();
+                break;
             // case "p":
             //     getPurchasesBetween();
             //     break;
@@ -256,23 +256,28 @@ public class SalesManagement {
         else {
             String command = "";
             while (!command.equals("q")) {
-                printTop();
-                System.out.println("║                    UPDATE PRODUCT'S INFORMATION                    ║");
-                printDivider();
-                System.out.println("║ [n]: update product's name                                         ║");
-                System.out.println("║ [s]: update product's selling price                                ║");
-                System.out.println("║ [u]: update product's unit price                                   ║");
-                System.out.println("║ [t]: update product's quantity                                     ║");
-                System.out.println("║ [q]: return to the main menu                                       ║");
-                printBottom();
-                command = this.scanner.nextLine();
-                processUpdateListCommand(command, p);
+                if (command.equals("r") && !inventory.getProducts().contains(p)) {
+                    return;
+                }
+                else {
+                    printTop();
+                    System.out.println("║                    UPDATE PRODUCT'S INFORMATION                    ║");
+                    printDivider();
+                    System.out.println("║ [n]: update product's name                                         ║");
+                    System.out.println("║ [s]: update product's selling price                                ║");
+                    System.out.println("║ [u]: update product's unit price                                   ║");
+                    System.out.println("║ [t]: update product's quantity                                     ║");
+                    System.out.println("║ [r]: remove product from inventory                                 ║");
+                    System.out.println("║ [q]: return to the main menu                                       ║");
+                    printBottom();
+                    command = this.scanner.nextLine();
+                    processUpdateListCommand(command, p);
+                }
             }
         } 
     }
 
-
-    // EFFECTS: 
+    // EFFECTS: process user's input in the update product's information menu
     public void processUpdateListCommand(String input, Product p) {
         switch(input) {
             case "n":
@@ -299,6 +304,21 @@ public class SalesManagement {
                 p.restock(Integer.valueOf(amount));
                 System.out.println(" Product successfully restocked by " + amount + " items");
                 break;
+            case "r":
+                System.out.println(" Are you sure you want to remove the product from inventory?");
+                System.out.println(" [y]: yes");
+                System.out.println(" [n]: no");
+                String command = this.scanner.nextLine();
+                switch (command) {
+                    case "y":
+                        inventory.removeProduct(p);
+                        System.out.println("Product successfully removed.");
+                        return;
+                    case "n":
+                        break; 
+                    default: 
+                        System.out.println(" Invalid option inputted. Please try again.");
+                }
             case "q":
                 return;
             default:
@@ -306,12 +326,67 @@ public class SalesManagement {
         }
     }
 
+    // EFFECTS: create a new purchase and add to inventory
+    private void addPurchase() {
+        printTop();
+        System.out.println("║                              ADD PURCHASE                          ║");
+        printBottom();
+
+        System.out.println("Please enter the payment received: ");
+        Double actualPaidAmount = Double.valueOf(this.scanner.nextLine());
+            
+        System.out.println("Please enter the payment method: ");
+        String paymentMethod = this.scanner.nextLine();
+
+        Purchase p = new Purchase(actualPaidAmount, paymentMethod);
+        
+        String input = "";
+        while (!input.equals("n")) {
+            System.out.println(" Would you like to record the products sold?");
+            System.out.println(" [y]: yes");
+            System.out.println(" [n]: no");
+            input = this.scanner.nextLine();
+            processAddPurchaseCommand(input, p);
+        
+        }
+        if (input.equals("n")) {
+            purchaseRecord.addPurchase(p);
+            System.out.println(" Purchase successfully recorded!");
+        }
+    }
+
+    // EFFECTS: process the user's input on the Add purchase menu
+    public void processAddPurchaseCommand(String input, Purchase p) {
+        switch (input) {
+            case "y":
+                System.out.println("Please enter the product's ID: ");
+                String id = this.scanner.nextLine();
+                Product product = this.inventory.findProductWithId(id);
+                if (product == null) {
+                    System.out.println(" Error: No product was found. Please try again.");
+
+                }
+                else {
+                    System.out.println("Please enter the product's amount: ");
+                    Integer amount = Integer.valueOf(this.scanner.nextLine());
+                    p.addProduct(product, amount);
+                    System.out.println("Product " + product.getName() + " (ID: " + product.getId() + ")" + " successfully recorded");
+                }
+                break;
+            case "n":
+                break;
+            default:
+                System.out.println(" Invalid option inputted. Please try again. ");
+        }
+    }
+
+    // EFFECTS:
     // MODIFIES: this
     // EFFECTS: Marks the program as not running
     public void quitApplication() {
         this.isProgramRunning = false;
     }
-    
+
     // EFFECTS: prints out the top line of the box
     private void printTop() {
         System.out.println("╔════════════════════════════════════════════════════════════════════╗");
