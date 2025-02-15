@@ -1,6 +1,8 @@
 package ui;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import model.*;
@@ -54,7 +56,7 @@ public class SalesManagement {
         System.out.println("║ [u]: update a product in inventory                                 ║");
         System.out.println("║ [r]: make and record a new purchase                                ║");
         System.out.println("║ [p]: view all purchases from date range                            ║");
-        System.out.println("║ [v]: view unreviewed purchases with selected of payment in one day ║");
+        System.out.println("║ [v]: view unreviewed purchases by day (financial reconciliation)   ║");
         System.out.println("║ [f]: get profit from date range                                    ║");
         System.out.println("║ [q]: exit the application                                          ║");
         printBottom();
@@ -78,9 +80,9 @@ public class SalesManagement {
             case "r":
                 addPurchase();
                 break;
-            // case "p":
-            //     getPurchasesBetween();
-            //     break;
+            case "p":
+                getPurchasesBetween();
+                break;
             // case "v":
             //     getOneDayPurchasesMethod();
             //     break;
@@ -200,12 +202,12 @@ public class SalesManagement {
     }
     
     // MODIFIES: this
-    // EFFECTS: process the user's input by modifying the current card index or exit the menu
+    // EFFECTS: process the user's input by modifying the current index or exit the menu
     public void processTraverseProductsList(String command, List<Product> products) {
         switch (command) {
             case "n":
                 if (currentIndex >= products.size() - 1) {
-                    System.out.println(" Error: No more new products to display.");
+                    System.out.println(" Error: No more new product to display.");
                 }
                 else {
                     currentIndex++;
@@ -213,7 +215,7 @@ public class SalesManagement {
                 break;
             case "p":
                 if (currentIndex <= 0) {
-                    System.out.println(" Error: No more previous products to display.");
+                    System.out.println(" Error: No more previous product to display.");
                 }
                 else {
                     currentIndex--;
@@ -225,6 +227,7 @@ public class SalesManagement {
                 System.out.println(" Invalid option inputted. Please try again.");
         }
     }
+
     // EFFECTS: display one product's information
     public void displayOneProduct(Product p) {
         String name = p.getName();
@@ -349,10 +352,8 @@ public class SalesManagement {
             processAddPurchaseCommand(input, p);
         
         }
-        if (input.equals("n")) {
-            purchaseRecord.addPurchase(p);
-            System.out.println(" Purchase successfully recorded!");
-        }
+        purchaseRecord.addPurchase(p);
+        System.out.println(" Purchase successfully recorded!");
     }
 
     // EFFECTS: process the user's input on the Add purchase menu
@@ -380,7 +381,106 @@ public class SalesManagement {
         }
     }
 
-    // EFFECTS:
+    // TODO: add invalid date exception
+    // MODIFIES: this
+    // EFFECTS: return the purchases in purchaseRecord in between given dates 
+    public void getPurchasesBetween() {
+        printTop();
+        System.out.println("║                       FIND PURCHASE BETWEEN                        ║");
+        printBottom();
+
+        System.out.println("Please enter the starting year: ");
+        Integer startYear = Integer.valueOf(this.scanner.nextLine());
+        System.out.println("Please enter the starting month: ");
+        Integer startMonth = Integer.valueOf(this.scanner.nextLine());
+        System.out.println("Please enter the starting day: ");
+        Integer startDay = Integer.valueOf(this.scanner.nextLine());
+
+        LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
+
+        LocalDate endDate = LocalDate.of(-9999, 1, 1);
+        while (endDate.isBefore(startDate)) {
+            System.out.println("Please enter the ending year: ");
+            Integer endYear = Integer.valueOf(this.scanner.nextLine());
+            System.out.println("Please enter the ending month: ");
+            Integer endMonth = Integer.valueOf(this.scanner.nextLine());
+            System.out.println("Please enter the ending day: ");
+            Integer endDay = Integer.valueOf(this.scanner.nextLine());
+            endDate = LocalDate.of(endYear, endMonth, endDay);
+            if (endDate.isBefore(startDate)) {
+                System.out.println(" Error: End date must not be before start date. Please try again.");
+            }
+        }
+
+        List<Purchase> result = purchaseRecord.getPurchasesBetween(startDate, endDate);
+        String command = "";
+            while (!command.equals("q")) {
+                printTop();
+                System.out.println("║                       FIND PURCHASE BETWEEN                        ║");
+                printDivider();
+                System.out.println("║ [n]: move to the next purchase                                     ║");
+                System.out.println("║ [p]: move to the previous purchase                                 ║");
+                System.out.println("║ [q]: return to the main menu                                       ║");
+                printDivider();
+                Purchase currentPurchase = result.get(currentIndex);
+                displayOnePurchase(currentPurchase);
+                command = this.scanner.nextLine();
+                processTraversePurchasesList(command, result);
+            }
+            currentIndex = 0;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: process the user's input by modifying the current index or exit the menu
+    public void processTraversePurchasesList(String command, List<Purchase> purchases) {
+        switch (command) {
+            case "n":
+                if (currentIndex >= purchases.size() - 1) {
+                    System.out.println(" Error: No more new purchase to display.");
+                }
+                else {
+                    currentIndex++;
+                }
+                break;
+            case "p":
+                if (currentIndex <= 0) {
+                    System.out.println(" Error: No more previous purchase to display.");
+                }
+                else {
+                    currentIndex--;
+                }
+                break;
+            case "q":
+                return;
+            default: 
+                System.out.println(" Invalid option inputted. Please try again.");
+        }
+    }
+
+    // EFFECTS: display one purchase's information
+    public void displayOnePurchase(Purchase p) {
+        String date = p.getDate().toString();
+        Map<Product,Integer> products = p.getPurchasedProducts();
+        String totalCost = p.getTotalCost().toString();
+        String actualPaidAmount = p.getActualPaidAmount().toString();
+        String paymentMethod = p.getPaymentMethod();
+        String reviewedStatus = Boolean.toString(p.getReviewedStatus());
+    
+        System.out.println("║ Purchase's date: " + date + " ".repeat(BOX_LENGTH - 18 - date.length()) + "║");
+        System.out.println("║ Purchase's products                                                ║");
+        for (Map.Entry<Product,Integer> entry : products.entrySet()) {
+            Product product = entry.getKey();
+            Integer amount = entry.getValue();
+            String display = (product.getName() + " (ID: " + product.getId() + "): " + amount + " item(s)");
+            System.out.println("║    - " + display + " ".repeat(BOX_LENGTH - 6 - display.length()) + "║");
+        }
+        System.out.println("║ Purchase's total: " + totalCost + " ".repeat(BOX_LENGTH - 19 - totalCost.length()) + "║");
+        System.out.println("║ Purchase's received payment: " + actualPaidAmount + " ".repeat(BOX_LENGTH - 30 - actualPaidAmount.length()) + "║");
+        System.out.println("║ Purchase's payment method: " + paymentMethod + " ".repeat(BOX_LENGTH - 28 - paymentMethod.length()) + "║");
+        System.out.println("║ Product's reviewed status: " + reviewedStatus + " ".repeat(BOX_LENGTH - 28 - reviewedStatus.length()) + "║");
+        printBottom();
+    }
+
     // MODIFIES: this
     // EFFECTS: Marks the program as not running
     public void quitApplication() {

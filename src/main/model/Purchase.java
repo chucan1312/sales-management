@@ -30,17 +30,17 @@ public class Purchase {
     // EFFECTS: Add product with bought amount in a purchase, add up price into totalCost,
     // and change the quantity of product accordingly. If product is already in purchasedProducts;
     // addProduct replace the original amount with the new one 
-    public void addProduct(Product product, int amount) {
+    public void addProduct(Product product, Integer amount) {
         if (!purchasedProducts.containsKey(product)) {
             purchasedProducts.put(product, amount);
-            totalCost += product.getSellingPrice() * (double) amount;
+            totalCost += product.getSellingPrice() * amount;
             product.sell(amount);
         }
         else {
             Integer originalAmount = purchasedProducts.get(product);
             purchasedProducts.put(product, amount);
-            totalCost -= product.getSellingPrice() * (double) originalAmount;
-            totalCost += product.getSellingPrice() * (double) amount;
+            totalCost -= product.getSellingPrice() * originalAmount;
+            totalCost += product.getSellingPrice() * amount;
             Integer mistake = amount - originalAmount;
             if (mistake > 0) {
                 product.sell(amount - originalAmount);
