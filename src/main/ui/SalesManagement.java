@@ -185,6 +185,8 @@ public class SalesManagement {
             String command = "";
             while (!command.equals("q")) {
                 printTop();
+                System.out.println("║                         FIND PRODUCT BY NAME                       ║");
+                printDivider();
                 System.out.println("║ [n]: move to the next product                                      ║");
                 System.out.println("║ [p]: move to the previous product                                  ║");
                 System.out.println("║ [q]: return to the main menu                                       ║");
@@ -192,7 +194,7 @@ public class SalesManagement {
                 Product currentProduct = products.get(currentIndex);
                 displayOneProduct(currentProduct);
                 command = this.scanner.nextLine();
-                handleTraverseProductsList(command, products);
+                processTraverseProductsList(command, products);
             }
             currentIndex = 0;
         }
@@ -200,7 +202,7 @@ public class SalesManagement {
     
     // MODIFIES: this
     // EFFECTS: process the user's input by modifying the current card index or exit the menu
-    public void handleTraverseProductsList(String command, List<Product> products) {
+    public void processTraverseProductsList(String command, List<Product> products) {
         switch (command) {
             case "n":
                 if (currentIndex >= products.size() - 1) {
@@ -244,8 +246,65 @@ public class SalesManagement {
     public void updateProduct() {
         printTop();
         System.out.println("║                    UPDATE PRODUCT'S INFORMATION                    ║");
-        printDivider();
+        printBottom();
+        
+        System.out.println(" Please enter the product's ID: ");
+        String typedId = this.scanner.nextLine();
+        Product p = this.inventory.findProductWithId(typedId);
+        if (p == null) {
+            System.out.println(" Error: No product was found. Please try again.");
+        }
+        else {
+            String command = "";
+            while (!command.equals("q")) {
+                printTop();
+                System.out.println("║                    UPDATE PRODUCT'S INFORMATION                    ║");
+                printDivider();
+                System.out.println("║ [n]: update product's name                                         ║");
+                System.out.println("║ [s]: update product's selling price                                ║");
+                System.out.println("║ [u]: update product's unit price                                   ║");
+                System.out.println("║ [t]: update product's quantity                                     ║");
+                System.out.println("║ [q]: return to the main menu                                       ║");
+                printBottom();
+                command = this.scanner.nextLine();
+                processUpdateListCommand(command, p);
+            }
+        } 
+    }
 
+
+    // EFFECTS: 
+    public void processUpdateListCommand(String input, Product p) {
+        switch(input) {
+            case "n":
+                System.out.println("Please enter new name: ");
+                String name = this.scanner.nextLine();
+                p.setName(name);
+                System.out.println(" Product's name successfully changed to " + name);
+                break;
+            case "s":
+                System.out.println("Please enter new selling price: ");
+                String sellingPrice = this.scanner.nextLine();
+                p.setSellingPrice(Double.valueOf(sellingPrice));
+                System.out.println(" Product's selling price successfully changed to " + sellingPrice);
+                break;
+            case "u":
+                System.out.println("Please enter new unit price: ");
+                String unitPrice = this.scanner.nextLine();
+                p.setUnitPrice(Double.valueOf(unitPrice));
+                System.out.println(" Product's unit price successfully changed to " + unitPrice);
+                break;
+            case "t":
+                System.out.println("Please enter restock amount: ");
+                String amount = this.scanner.nextLine();
+                p.restock(Integer.valueOf(amount));
+                System.out.println(" Product successfully restocked by " + amount + " items");
+                break;
+            case "q":
+                return;
+            default:
+                System.out.println(" Invalid option inputted. Please try again.");
+        }
     }
 
     // EFFECTS: prints out the top line of the box
