@@ -88,8 +88,7 @@ public class SalesManagement {
             //     getProfit();
             //     break;
             case "q":
-                this.isProgramRunning = false;
-                break;
+                quitApplication();
             default:
                 System.out.println(" Invalid option inputted. Please try again. ");
         }
@@ -307,6 +306,12 @@ public class SalesManagement {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Marks the program as not running
+    public void quitApplication() {
+        this.isProgramRunning = false;
+    }
+    
     // EFFECTS: prints out the top line of the box
     private void printTop() {
         System.out.println("╔════════════════════════════════════════════════════════════════════╗");
