@@ -92,7 +92,7 @@ public class SalesManagement {
             case "q":
                 quitApplication();
             default:
-                System.out.println(" Invalid option inputted. Please try again. ");
+                System.out.println(" ERROR: Invalid option inputted. Please try again. ");
         }
     }
 
@@ -109,7 +109,7 @@ public class SalesManagement {
         String id = this.scanner.nextLine();
         for (Product p : inventory.getProducts()) {
             if (p.getId().equals(id)) {
-                System.out.println(" ID already existed. Please try again.");
+                System.out.println(" ERROR: ID already existed. Please try again.");
                 return;
             }
         }
@@ -146,7 +146,7 @@ public class SalesManagement {
             case "n":
                 break;
             default:
-                System.out.println(" Invalid option inputted. Please try again. ");
+                System.out.println(" ERROR: Invalid option inputted. Please try again. ");
         }
     }
 
@@ -160,7 +160,7 @@ public class SalesManagement {
         String typedId = this.scanner.nextLine();
         Product p = this.inventory.findProductWithId(typedId);
         if (p == null) {
-            System.out.println(" Error: No product was found. Please try again.");
+            System.out.println(" ERROR: No product was found. Please try again.");
         }
         else {
             printTop();
@@ -179,7 +179,7 @@ public class SalesManagement {
         String searchTerm = this.scanner.nextLine();
         List<Product> products = inventory.findProductWithName(searchTerm);
         if (products.isEmpty()) {
-            System.out.println(" Error: No product was found. Please try again.");
+            System.out.println(" ERROR: No product was found. Please try again.");
             return;
         }
         else {
@@ -207,7 +207,7 @@ public class SalesManagement {
         switch (command) {
             case "n":
                 if (currentIndex >= products.size() - 1) {
-                    System.out.println(" Error: No more new product to display.");
+                    System.out.println(" ERROR: No more new product to display.");
                 }
                 else {
                     currentIndex++;
@@ -215,7 +215,7 @@ public class SalesManagement {
                 break;
             case "p":
                 if (currentIndex <= 0) {
-                    System.out.println(" Error: No more previous product to display.");
+                    System.out.println(" ERROR: No more previous product to display.");
                 }
                 else {
                     currentIndex--;
@@ -224,7 +224,7 @@ public class SalesManagement {
             case "q":
                 return;
             default: 
-                System.out.println(" Invalid option inputted. Please try again.");
+                System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
 
@@ -259,7 +259,7 @@ public class SalesManagement {
         else {
             String command = "";
             while (!command.equals("q")) {
-                if (command.equals("r") && !inventory.getProducts().contains(p)) {
+                if (!inventory.getProducts().contains(p)) {
                     return;
                 }
                 else {
@@ -320,12 +320,12 @@ public class SalesManagement {
                     case "n":
                         break; 
                     default: 
-                        System.out.println(" Invalid option inputted. Please try again.");
+                        System.out.println(" ERROR: Invalid option inputted. Please try again.");
                 }
             case "q":
                 return;
             default:
-                System.out.println(" Invalid option inputted. Please try again.");
+                System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
 
@@ -363,13 +363,20 @@ public class SalesManagement {
                 System.out.println("Please enter the product's ID: ");
                 String id = this.scanner.nextLine();
                 Product product = this.inventory.findProductWithId(id);
+                
                 if (product == null) {
-                    System.out.println(" Error: No product was found. Please try again.");
+                    System.out.println(" ERROR: No product was found. Please try again.");
 
                 }
                 else {
                     System.out.println("Please enter the product's amount: ");
-                    Integer amount = Integer.valueOf(this.scanner.nextLine());
+                    Integer amount = 999999999;
+                    while (amount > product.getQuantity()) {
+                        amount = Integer.valueOf(this.scanner.nextLine());
+                        if (amount > product.getQuantity()) {
+                            System.out.println(" ERROR: Not enough items in stock. Please try again.");
+                        }
+                    }
                     p.addProduct(product, amount);
                     System.out.println("Product " + product.getName() + " (ID: " + product.getId() + ")" + " successfully recorded");
                 }
@@ -377,7 +384,7 @@ public class SalesManagement {
             case "n":
                 break;
             default:
-                System.out.println(" Invalid option inputted. Please try again. ");
+                System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
 
@@ -408,7 +415,7 @@ public class SalesManagement {
             Integer endDay = Integer.valueOf(this.scanner.nextLine());
             endDate = LocalDate.of(endYear, endMonth, endDay);
             if (endDate.isBefore(startDate)) {
-                System.out.println(" Error: End date must not be before start date. Please try again.");
+                System.out.println(" ERROR: End date must not be before start date. Please try again.");
             }
         }
 
@@ -420,6 +427,8 @@ public class SalesManagement {
                 printDivider();
                 System.out.println("║ [n]: move to the next purchase                                     ║");
                 System.out.println("║ [p]: move to the previous purchase                                 ║");
+                System.out.println("║ [r]: mark purchase as reviewed                                     ║");
+                System.out.println("║ [u]: mark purchase as not reviewed                                 ║");
                 System.out.println("║ [q]: return to the main menu                                       ║");
                 printDivider();
                 Purchase currentPurchase = result.get(currentIndex);
@@ -431,12 +440,12 @@ public class SalesManagement {
     }
 
     // MODIFIES: this
-    // EFFECTS: process the user's input by modifying the current index or exit the menu
+    // EFFECTS: process the user's input after purchases have been searched in find purchase between menu
     public void processTraversePurchasesList(String command, List<Purchase> purchases) {
         switch (command) {
             case "n":
                 if (currentIndex >= purchases.size() - 1) {
-                    System.out.println(" Error: No more new purchase to display.");
+                    System.out.println(" ERROR: No more new purchase to display.");
                 }
                 else {
                     currentIndex++;
@@ -444,16 +453,22 @@ public class SalesManagement {
                 break;
             case "p":
                 if (currentIndex <= 0) {
-                    System.out.println(" Error: No more previous purchase to display.");
+                    System.out.println(" ERROR: No more previous purchase to display.");
                 }
                 else {
                     currentIndex--;
                 }
                 break;
+            case "r":
+                purchases.get(currentIndex).reviewPurchase();
+                System.out.println(" Purchase has been marked reviewed!");
+            case "u":
+                purchases.get(currentIndex).unreviewPurchase();
+                System.out.println(" Purchase has been marked not reviewed!");
             case "q":
                 return;
             default: 
-                System.out.println(" Invalid option inputted. Please try again.");
+                System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
 
@@ -484,6 +499,7 @@ public class SalesManagement {
     // MODIFIES: this
     // EFFECTS: Marks the program as not running
     public void quitApplication() {
+        System.out.println(" Thanks for using the Sales Management app!");
         this.isProgramRunning = false;
     }
 
