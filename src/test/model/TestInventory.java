@@ -83,7 +83,7 @@ public class TestInventory {
         i.addProduct(p1);
         i.addProduct(p2);
         i.addProduct(p3);
-        i.removeProduct("123");
+        i.removeProduct(p1);
         assertEquals(p2, i.getProducts().get(0));
         assertEquals(p3, i.getProducts().get(1));
         assertEquals(2, i.getProducts().size());
@@ -95,12 +95,12 @@ public class TestInventory {
         i.addProduct(p2);
         i.addProduct(p3);
         
-        i.removeProduct("789");
+        i.removeProduct(p3);
         assertEquals(p1, i.getProducts().get(0));
         assertEquals(p2, i.getProducts().get(1));
         assertEquals(2, i.getProducts().size());
 
-        i.removeProduct("123");
+        i.removeProduct(p1);
         assertEquals(p2, i.getProducts().get(0));
         assertEquals(1, i.getProducts().size());
     }

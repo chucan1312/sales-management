@@ -33,15 +33,9 @@ public class Inventory {
 
     // REQUIRES: findProductWithId(id) != null
     // MODIFIES: this
-    // EFFECTS: remove a product given its id
-    public void removeProduct(String id) {
-        List<Product> listToRemove = new ArrayList<Product>();
-        for (Product product : products) {
-            if (product.getId().equals(id)) {
-                listToRemove.add(product);
-            }
-        }
-        products.removeIf(p -> listToRemove.contains(p));
+    // EFFECTS: remove a product 
+    public void removeProduct(Product p) {
+        products.remove(p);
     }
 
     // REQUIRES: searchTerm != ""
