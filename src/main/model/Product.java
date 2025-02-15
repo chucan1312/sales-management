@@ -32,13 +32,20 @@ public class Product {
     }
 
     // REQUIRES: sellingPrice > 0
+    // MODIFIES: this
     public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
     //REQUIRES: unitPrice > 0
+    // MODIFIES: this
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    // MODIFIES: this
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getQuantity() {
