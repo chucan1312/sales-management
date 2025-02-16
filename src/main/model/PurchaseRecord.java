@@ -37,7 +37,7 @@ public class PurchaseRecord {
         List<Purchase> result = new ArrayList<Purchase>();
         for (Purchase p : purchases) {
             LocalDate pDate = p.getDate();
-            if (pDate.isEqual(date) && !p.getReviewedStatus() && p.getPaymentMethod() == method) {
+            if (pDate.isEqual(date) && !p.getReviewedStatus() && p.getPaymentMethod().equals(method)) {
                 result.add(p);
             }
         }
