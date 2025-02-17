@@ -48,7 +48,7 @@ public class SalesManagement {
     // EFFECTS: display a list of commands that can be used in the main menu
     public void displayMenu() {
         printTop();
-        System.out.println("║                               MAIN MENU                            ║");
+        printTitle("main menu");
         printDivider();
         System.out.println("║ [a]: add a product to inventory                                    ║");
         System.out.println("║ [i]: look up a product by id                                       ║");
@@ -83,12 +83,12 @@ public class SalesManagement {
             case "p":
                 getPurchasesBetween();
                 break;
-            // case "v":
-            //     getOneDayPurchasesMethod();
-            //     break;
-            // case "f":
-            //     getProfit();
-            //     break;
+            case "v":
+                getOneDayPurchasesMethod();
+                break;
+            case "f":
+                getProfit();
+                break;
             case "q":
                 quitApplication();
             default:
@@ -99,7 +99,7 @@ public class SalesManagement {
     // EFFECTS: create a new product and add to inventory
     private void addProduct() {
         printTop();
-        System.out.println("║                              ADD PRODUCT                           ║");
+        printTitle("add product");
         printBottom();
         
         System.out.println("Please enter the product's name: ");
@@ -153,7 +153,7 @@ public class SalesManagement {
     // EFFECTS: display the product's information given their id
     public void findProductWithId() {
         printTop();
-        System.out.println("║                          FIND PRODUCT BY ID                        ║");
+        printTitle("find product by id");
         printBottom();
         
         System.out.println(" Please enter the product's ID: ");
@@ -171,14 +171,14 @@ public class SalesManagement {
     // EFFECTS: display the products' information given a search term, one product at a time
     public void findProductWithName() {
         printTop();
-        System.out.println("║                         FIND PRODUCT BY NAME                       ║");
+        printTitle("find product by name");
         printBottom();
 
         
         System.out.println(" Please enter the search term: ");
         String searchTerm = this.scanner.nextLine();
-        List<Product> products = inventory.findProductWithName(searchTerm);
-        if (products.isEmpty()) {
+        List<Product> result = inventory.findProductWithName(searchTerm);
+        if (result.isEmpty()) {
             System.out.println(" ERROR: No product was found. Please try again.");
             return;
         }
@@ -186,16 +186,18 @@ public class SalesManagement {
             String command = "";
             while (!command.equals("q")) {
                 printTop();
-                System.out.println("║                         FIND PRODUCT BY NAME                       ║");
+                printTitle("find product by name");
                 printDivider();
                 System.out.println("║ [n]: move to the next product                                      ║");
                 System.out.println("║ [p]: move to the previous product                                  ║");
                 System.out.println("║ [q]: return to the main menu                                       ║");
                 printDivider();
-                Product currentProduct = products.get(currentIndex);
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s):";
+                System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
+                Product currentProduct = result.get(currentIndex);
                 displayOneProduct(currentProduct);
                 command = this.scanner.nextLine();
-                processTraverseProductsList(command, products);
+                processTraverseProductsList(command, result);
             }
             currentIndex = 0;
         }
@@ -247,7 +249,7 @@ public class SalesManagement {
     // EFFECTS: change a product's information given the id
     public void updateProduct() {
         printTop();
-        System.out.println("║                    UPDATE PRODUCT'S INFORMATION                    ║");
+        printTitle("update product's information");
         printBottom();
         
         System.out.println(" Please enter the product's ID: ");
@@ -264,7 +266,7 @@ public class SalesManagement {
                 }
                 else {
                     printTop();
-                    System.out.println("║                    UPDATE PRODUCT'S INFORMATION                    ║");
+                    printTitle("update product's information");
                     printDivider();
                     System.out.println("║ [n]: update product's name                                         ║");
                     System.out.println("║ [s]: update product's selling price                                ║");
@@ -332,7 +334,7 @@ public class SalesManagement {
     // EFFECTS: create a new purchase and add to inventory
     private void addPurchase() {
         printTop();
-        System.out.println("║                              ADD PURCHASE                          ║");
+        printTitle("add purchase");
         printBottom();
 
         System.out.println("Please enter the payment received: ");
@@ -387,13 +389,12 @@ public class SalesManagement {
                 System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
-
-    // TODO: add invalid date exception
+    
     // MODIFIES: this
-    // EFFECTS: return the purchases in purchaseRecord in between given dates 
+    // EFFECTS: display the purchases in purchaseRecord in between given dates, one purchase at a time
     public void getPurchasesBetween() {
         printTop();
-        System.out.println("║                       FIND PURCHASE BETWEEN                        ║");
+        printTitle("find purchase between");
         printBottom();
 
         System.out.println("Please enter the starting year: ");
@@ -420,10 +421,14 @@ public class SalesManagement {
         }
 
         List<Purchase> result = purchaseRecord.getPurchasesBetween(startDate, endDate);
-        String command = "";
+        if (result.isEmpty()) {
+            System.out.println(" There's no purchase recorded from " + startDate.toString() + " to " + endDate.toString() + ".");
+        }
+        else {
+            String command = "";
             while (!command.equals("q")) {
                 printTop();
-                System.out.println("║                       FIND PURCHASE BETWEEN                        ║");
+                printTitle("find purchase between");
                 printDivider();
                 System.out.println("║ [n]: move to the next purchase                                     ║");
                 System.out.println("║ [p]: move to the previous purchase                                 ║");
@@ -431,16 +436,19 @@ public class SalesManagement {
                 System.out.println("║ [u]: mark purchase as not reviewed                                 ║");
                 System.out.println("║ [q]: return to the main menu                                       ║");
                 printDivider();
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s)";
+                System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
                 Purchase currentPurchase = result.get(currentIndex);
                 displayOnePurchase(currentPurchase);
                 command = this.scanner.nextLine();
                 processTraversePurchasesList(command, result);
             }
             currentIndex = 0;
+        }
     }
 
     // MODIFIES: this
-    // EFFECTS: process the user's input after purchases have been searched in find purchase between menu
+    // EFFECTS: process the user's input after purchases have been searched in find purchase menus
     public void processTraversePurchasesList(String command, List<Purchase> purchases) {
         switch (command) {
             case "n":
@@ -462,13 +470,59 @@ public class SalesManagement {
             case "r":
                 purchases.get(currentIndex).reviewPurchase();
                 System.out.println(" Purchase has been marked reviewed!");
+                break;
             case "u":
                 purchases.get(currentIndex).unreviewPurchase();
                 System.out.println(" Purchase has been marked not reviewed!");
+                break;
             case "q":
                 return;
             default: 
                 System.out.println(" ERROR: Invalid option inputted. Please try again.");
+        }
+    }
+
+    // MODFIFES: this
+    // EFFECTS: display all unreviewed purchases with specified method of payment in one day, one purchase at a time
+    public void getOneDayPurchasesMethod() {
+        printTop();        
+        printTitle("financial reconciliation");
+        printBottom();
+
+        System.out.println(" Please enter the year: ");
+        Integer year = Integer.valueOf(this.scanner.nextLine());
+        System.out.println("Please enter the month: ");
+        Integer month = Integer.valueOf(this.scanner.nextLine());
+        System.out.println("Please enter the day: ");
+        Integer day = Integer.valueOf(this.scanner.nextLine());
+        System.out.println("Please enter the method of payment: ");
+        String paymentMethod = this.scanner.nextLine();
+        LocalDate date = LocalDate.of(year, month, day);
+
+        List<Purchase> result = purchaseRecord.getOneDayPurchasesMethod(date, paymentMethod);
+        if (result.isEmpty()) {
+            System.out.println(" There's no unreviewed purchase on " + date.toString() + " using " + paymentMethod + ".");
+        }
+        else {
+            String command = "";
+            while (!command.equals("q")) {
+                printTop();
+                printTitle("financial reconciliation");
+                printDivider();
+                System.out.println("║ [n]: move to the next purchase                                     ║");
+                System.out.println("║ [p]: move to the previous purchase                                 ║");
+                System.out.println("║ [r]: mark purchase as reviewed                                     ║");
+                System.out.println("║ [u]: mark purchase as not reviewed                                 ║");
+                System.out.println("║ [q]: return to the main menu                                       ║");
+                printDivider();
+                Purchase currentPurchase = result.get(currentIndex);
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s)";
+                System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
+                displayOnePurchase(currentPurchase);
+                command = this.scanner.nextLine();
+                processTraversePurchasesList(command, result);
+            }                
+            currentIndex = 0;
         }
     }
 
@@ -496,6 +550,39 @@ public class SalesManagement {
         printBottom();
     }
 
+    // EFFECTS: return the profit in between given dates
+    public void getProfit() {
+        printTop();
+        printTitle("get profit");
+        printBottom();
+
+        System.out.println("Please enter the starting year: ");
+        Integer startYear = Integer.valueOf(this.scanner.nextLine());
+        System.out.println("Please enter the starting month: ");
+        Integer startMonth = Integer.valueOf(this.scanner.nextLine());
+        System.out.println("Please enter the starting day: ");
+        Integer startDay = Integer.valueOf(this.scanner.nextLine());
+
+        LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
+
+        LocalDate endDate = LocalDate.of(-9999, 1, 1);
+        while (endDate.isBefore(startDate)) {
+            System.out.println("Please enter the ending year: ");
+            Integer endYear = Integer.valueOf(this.scanner.nextLine());
+            System.out.println("Please enter the ending month: ");
+            Integer endMonth = Integer.valueOf(this.scanner.nextLine());
+            System.out.println("Please enter the ending day: ");
+            Integer endDay = Integer.valueOf(this.scanner.nextLine());
+            endDate = LocalDate.of(endYear, endMonth, endDay);
+            if (endDate.isBefore(startDate)) {
+                System.out.println(" ERROR: End date must not be before start date. Please try again.");
+            }
+        }
+
+        Double profit = purchaseRecord.getProfit(startDate, endDate);
+        System.out.println("Profit made from " + startDate.toString() + " to " + endDate.toString() + ": " + profit); 
+    }
+
     // MODIFIES: this
     // EFFECTS: Marks the program as not running
     public void quitApplication() {
@@ -516,5 +603,16 @@ public class SalesManagement {
     // EFFECTS: prints out the bottom line of the box
     private void printBottom() {
         System.out.println("╚════════════════════════════════════════════════════════════════════╝");
+    }
+
+    // EFFECTS: print out the top title for each menu
+    private void printTitle(String title) {
+        int length = title.length();
+        if ((length % 2) == 1) {
+            System.out.println("║" + " ".repeat(BOX_LENGTH/2 - (length + 1)/2) + title.toUpperCase() + " ".repeat(BOX_LENGTH/2 - (length - 1)/2) + "║");
+        }
+        else {
+            System.out.println("║" + " ".repeat(BOX_LENGTH/2 - length/2) + title.toUpperCase() + " ".repeat(BOX_LENGTH/2 - length/2) + "║");
+        }
     }
 }
