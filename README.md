@@ -15,5 +15,7 @@ This project is of interest to me because my parents own a business, and they ha
 - As a user, I want to be able to look up an item/list of items by the search terms
 - As a user, I want to be able to change a products' information in the inventory 
 - As a user, I want to get the total profit of the business within given date range
+- As a user, I want to be able to save my list of products and purchases (if I so choose)
+- As a user, I want to be able to load my list of products and purchases (if I so choose)
 - As a user, I want to get statistics on high to low demand products (by month or quarter) [NOT FINISHED]
 - As a user, I want to get statistics on frequently returned products [NOT FINISHED]
