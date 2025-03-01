@@ -21,8 +21,14 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of inventory and purchase record to file
-    public void write(Inventory i, PurchaseRecord pr) {
+    // EFFECTS: writes JSON representation of inventory to file
+    public void writeInventory(Inventory i) {
+        // stub
+    }
+
+    // MODIFIES: this 
+    // EFFECTS: writes JSOn representation of purchase record to file
+    public void writePurchasesRecord(PurchaseRecord pr) {
         // stub
     }
 
