@@ -11,12 +11,7 @@ public class Inventory {
     public Inventory() {
         products = new ArrayList<Product>();
     }
-
-    // EFFECTS: return list of product
-    public List<Product> findProduct() {
-        //stub
-    }
-
+    
     // EFFECTS: return a product when given an id,
     // return null if not found
     public Product findProductWithId(String id) {

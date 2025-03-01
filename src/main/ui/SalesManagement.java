@@ -51,6 +51,7 @@ public class SalesManagement {
         printTitle("main menu");
         printDivider();
         System.out.println("║ [a]: add a product to inventory                                    ║");
+        System.out.println("║ [o]: view all products in inventory                                ║");
         System.out.println("║ [i]: look up a product by id                                       ║");
         System.out.println("║ [n]: look up products by search term                               ║");
         System.out.println("║ [u]: update a product in inventory                                 ║");
@@ -67,6 +68,9 @@ public class SalesManagement {
         switch (input) {
             case "a":
                 addProduct();
+                break;
+            case "o":
+                getProducts();
                 break;
             case "i": 
                 findProductWithId();
@@ -150,6 +154,35 @@ public class SalesManagement {
         }
     }
 
+    // EFFECTS: display all products' information, one product at a time
+    public void getProducts() {
+        List<Product> result = inventory.getProducts();
+
+        if (result.isEmpty()) {
+            System.out.println(" ERROR: No product was found. Please try again.");
+            return;
+        }
+        else {
+            String command = "";
+            while (!command.equals("q")) {
+                printTop();
+                printTitle("find product by name");
+                printDivider();
+                System.out.println("║ [n]: move to the next product                                      ║");
+                System.out.println("║ [p]: move to the previous product                                  ║");
+                System.out.println("║ [q]: return to the main menu                                       ║");
+                printDivider();
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s):";
+                System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
+                Product currentProduct = result.get(currentIndex);
+                displayOneProduct(currentProduct);
+                command = this.scanner.nextLine();
+                processTraverseProductsList(command, result);
+            }
+            currentIndex = 0;
+        }
+    } 
+    
     // EFFECTS: display the product's information given their id
     public void findProductWithId() {
         printTop();
