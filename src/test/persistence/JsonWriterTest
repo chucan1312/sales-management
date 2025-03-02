@@ -68,36 +68,9 @@ class JsonWriterTest extends JsonTest {
             fail("Exception should not have been thrown");
         }
     }
-
+        
     @Test 
-    void testWriterGeneralInventory() {
-        try {
-            Inventory i = new Inventory();
-            Product p1 = new Product("cake", "123", 12.0);
-            Product p2 = new Product("cupcake", "456", 13.0);
-            p1.setSellingPrice(15.0);
-            p2.setSellingPrice(14.5);
-            p1.restock(10);
-            p2.restock(12);
-            i.addProduct(p1);
-            i.addProduct(p2);
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventoryPurchaseRecord.json");
-            writer.open();
-            writer.writeInventory(i);
-            writer.close();
-
-            JsonReader reader = new JsonReader("./data/testWriterEmptyInventoryPurchaseRecord.json");
-            i = reader.readInventory();
-            assertEquals(2, i.getProducts().size());
-            checkProduct("cake", "123", 12.0, 15.0, 10, p1);
-            checkProduct("cupcake", "456", 13.0, 14.5, 12, p2);
-        } catch (IOException e) {
-            fail("Exception should not have been thrown");
-        }
-    }
-
-    @Test 
-    void testWriterGeneralPurchaseRecord() {
+    void testWriterGeneral() {
         try {
             Product p1 = new Product("cake", "123", 12.0);
             Product p2 = new Product("cupcake", "456", 3.0);
@@ -106,6 +79,10 @@ class JsonWriterTest extends JsonTest {
             p1.restock(10);
             p2.restock(12);
             
+            Inventory i = new Inventory();
+            i.addProduct(p1);
+            i.addProduct(p2);
+
             PurchaseRecord pr = new PurchaseRecord();
             Purchase p1 = new Purchase(10.0, "cash");
             Purchase p2 = new Purchase(24.15, "credit");
@@ -115,18 +92,25 @@ class JsonWriterTest extends JsonTest {
             p2.reviewPurchase();
             pr.addPurchase(p1);
             pr.addPurchase(p2);
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            JsonWriter writer = new JsonWriter("./data/testWriterGeneralInventoryPurchaseRecord.json");
             writer.open();
+            writer.writeInventory(i);
             writer.writePurchasesRecord(pr);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            JsonReader reader = new JsonReader("./data/testWriterGeneralInventoryPurchaseRecord.json");
+            
+            i = reader.readInventory();
+            assertEquals(2, i.getProducts().size());
+            checkProduct("cake", "123", 12.0, 15.0, 10, p1);
+            checkProduct("cupcake", "456", 13.0, 14.5, 12, p2);
+
             pr = reader.readPurchaseRecord();
             assertEquals(2, pr.getProducts().size());
             checkPurchase(LocalDate.now(), Map<Product, Integer> purchasedProducts = new HashMap<Product,Integer>(), 10.0, "cash", "false", p1);
-            Map<Product, Integer> purchasedProducts = new HashMap<Product, Integer>();
-            purchaseProducts.put(p1, 1);
-            purchaseProducts.put(p2, 2);
+            Map<Product, Integer> purchasedProducts = new HashMap<String, Integer>();
+            purchaseProducts.put("123", 1);
+            purchaseProducts.put("456", 2);
             checkPurchase(LocalDate.of(2024, 12, 13), purchasedProducts, 24.15, "credit", "true", p2);
         } catch (IOException e) {
             fail("Exception should not have been thrown");

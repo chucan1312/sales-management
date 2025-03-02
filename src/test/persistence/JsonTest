@@ -14,9 +14,16 @@ public class JsonTest {
         assertEquals(quantity, p.getQuantity());
     }
 
-    protected void checkPurchase(LocalDate date, Map<Product, Integer> purchasedProducts, Double actualPaidAmount, String paymentMethod, Boolean reviewedStatus, Purchase p) {
+    protected void checkPurchase(LocalDate date, Map<String, Integer> purchasedProducts, Double actualPaidAmount, String paymentMethod, Boolean reviewedStatus, Purchase p) {
+        // Convert HashMap that contains Product as keys into it's ID, keeping the same values
+        Map<Product, Integer> pp = p.getPurchasedProducts();
+        Map<String, Integer> result = new HashMap<String, Integer>();
+        for (Map.Entry<Product, Integer> entry : pp.entrySet()) {
+            result.put(entry.getKey().getId(), entry.getValue());
+        }
+
         assertEquals(date, p.getDate());
-        assertEquals(purchasedProducts, p.getPurchasedProducts());
+        assertEquals(purchasedProducts, result);
         assertEquals(actualPaidAmount, p.getActualPaidAmount());
         assertEquals(paymentMethod, p.getPaymentMethod());
         assertEquals(reviewedStatus, p.getReviewedStatus());
