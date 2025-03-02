@@ -1,0 +1,137 @@
+package persistence;
+
+import model.Category;
+import model.Thingy;
+import model.WorkRoom;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class JsonWriterTest extends JsonTest {
+
+    @Test
+    void testInventoryWriterInvalidFile() {
+        try {
+            Inventory i = new Inventory();
+            JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
+            writer.open();
+            fail("IOException was expected");
+        } catch (IOException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void testPurchaseRecordWriterInvalidFile() {
+        try {
+            PurchaseRecord pr = new PurchaseRecord();
+            JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
+            writer.open();
+            fail("IOException was expected");
+        } catch (IOException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void testWriterEmptyInventory() {
+        try {
+            Inventory i = new Inventory();
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            writer.open();
+            writer.writeInventory(i);
+            writer.close();
+
+            JsonReader reader = new JsonReader("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            i = reader.readInventory();
+            assertEquals(0, i.getProducts().size());
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    
+    @Test
+    void testWriterEmptyPurchaseRecord() {
+        try {
+            PurchaseRecord pr = new PurchaseRecord();
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            writer.open();
+            writer.writePurchasesRecord(pr);
+            writer.close();
+
+            JsonReader reader = new JsonReader("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            pr = reader.readPurchaseRecord();
+            assertEquals(0, pr.getProducts().size());
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test 
+    void testWriterGeneralInventory() {
+        try {
+            Inventory i = new Inventory();
+            Product p1 = new Product("cake", "123", 12.0);
+            Product p2 = new Product("cupcake", "456", 13.0);
+            p1.setSellingPrice(15.0);
+            p2.setSellingPrice(14.5);
+            p1.restock(10);
+            p2.restock(12);
+            i.addProduct(p1);
+            i.addProduct(p2);
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            writer.open();
+            writer.writeInventory(i);
+            writer.close();
+
+            JsonReader reader = new JsonReader("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            i = reader.readInventory();
+            assertEquals(2, i.getProducts().size());
+            checkProduct("cake", "123", 12.0, 15.0, 10, p1);
+            checkProduct("cupcake", "456", 13.0, 14.5, 12, p2);
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test 
+    void testWriterGeneralPurchaseRecord() {
+        try {
+            Product p1 = new Product("cake", "123", 12.0);
+            Product p2 = new Product("cupcake", "456", 3.0);
+            p1.setSellingPrice(15.0);
+            p2.setSellingPrice(14.5);
+            p1.restock(10);
+            p2.restock(12);
+            
+            PurchaseRecord pr = new PurchaseRecord();
+            Purchase p1 = new Purchase(10.0, "cash");
+            Purchase p2 = new Purchase(24.15, "credit");
+            p2.setDate(2024, 12, 13);
+            p2.addProduct(p1, 1);
+            p2.addProduct(p2, 2);
+            p2.reviewPurchase();
+            pr.addPurchase(p1);
+            pr.addPurchase(p2);
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            writer.open();
+            writer.writePurchasesRecord(pr);
+            writer.close();
+
+            JsonReader reader = new JsonReader("./data/testWriterEmptyInventoryPurchaseRecord.json");
+            pr = reader.readPurchaseRecord();
+            assertEquals(2, pr.getProducts().size());
+            checkPurchase(LocalDate.now(), Map<Product, Integer> purchasedProducts = new HashMap<Product,Integer>(), 10.0, "cash", "false", p1);
+            Map<Product, Integer> purchasedProducts = new HashMap<Product, Integer>();
+            purchaseProducts.put(p1, 1);
+            purchaseProducts.put(p2, 2);
+            checkPurchase(LocalDate.of(2024, 12, 13), purchasedProducts, 24.15, "credit", "true", p2);
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+}
