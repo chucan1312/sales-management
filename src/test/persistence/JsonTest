@@ -1,0 +1,27 @@
+package persistence;
+
+import model.Category;
+import model.Thingy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class JsonTest {
+    protected void checkProduct(String name, String id, Double unitPrice, Double sellingPrice, Integer quantity, Product p) {
+        assertEquals(name, p.getName());
+        assertEquals(id, p.getId());
+        assertEquals(unitPrice, p.getUnitPrice());
+        assertEquals(sellingPrice, p.getSellingPrice());
+        assertEquals(quantity, p.getQuantity());
+    }
+
+    protected void checkPurchase(LocalDate date, Map<Product, Integer> purchasedProducts, Double totalCost, Double actualPaidAmount, String paymentMethod, Boolean reviewedStatus, Purchase p) {
+        assertEquals(date, p.getDate());
+        assertEquals(purchasedProducts, p.getPurchasedProducts());
+        assertEquals(totalCost, p.getTotalCost());
+        assertEquals(actualPaidAmount, p.getActualPaidAmount());
+        assertEquals(paymentMethod, p.getPaymentMethod());
+        assertEquals(reviewedStatus, p.getReviewedStatus());
+    }
+}
+
+
