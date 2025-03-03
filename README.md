@@ -3,7 +3,6 @@
 ## Overview
 
 This will be an application for small businesses to keep track of their store's sales and inventory. It can let you enter products' information such as their names, selling prices, most recent unit costs. It can also keep track of customers' purchases or returns, and method of payment. <br/>
-This project is of interest to me because my parents own a business, and they had their internal sales management software written around 15 years ago. I wanted to try working on this project to get a better idea of what a sales management application would be like, before tackling the very outdated software my parents are using.
 
 ## User stories
 
