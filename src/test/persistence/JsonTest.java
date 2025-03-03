@@ -1,9 +1,12 @@
 package persistence;
 
-import model.Category;
-import model.Thingy;
+import model.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JsonTest {
     protected void checkProduct(String name, String id, Double unitPrice, Double sellingPrice, Integer quantity, Product p) {

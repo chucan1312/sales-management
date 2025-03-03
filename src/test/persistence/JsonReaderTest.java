@@ -4,7 +4,9 @@ import model.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +16,8 @@ class JsonReaderTest extends JsonTest {
     void testInventoryReaderInvalidFile() {
         try {
             Inventory i = new Inventory();
-            JsonWriter reader = new JsonReader("./data/my\0illegal:fileName.json");
+            JsonReader reader = new JsonReader("./data/my\0illegal:fileName.json");
+            reader.readInventory();
             fail("IOException was expected");
         } catch (IOException e) {
             //pass
@@ -25,7 +28,8 @@ class JsonReaderTest extends JsonTest {
     void testPurchaseRecordReaderInvalidFile() {
         try {
             PurchaseRecord pr = new PurchaseRecord();
-            JsonWriter reader = new JsonReader("./data/my\0illegal:fileName.json");
+            JsonReader reader = new JsonReader("./data/my\0illegal:fileName.json");
+            reader.readPurchaseRecord();
             fail("IOException was expected");
         } catch (IOException e) {
             //pass
@@ -34,10 +38,10 @@ class JsonReaderTest extends JsonTest {
 
     @Test 
     void testReaderEmptyInventory() {
-        JSonReader reader = new JsonReader("./data/testReaderEMmptyInventoryPurchaseRecord.json");
+        JsonReader reader = new JsonReader("./data/testReaderEMmptyInventoryPurchaseRecord.json");
         try {
-            Inventory i = new Inventory("./data/testReaderEMmptyInventoryPurchaseRecord.json");
-            assertEquals(0, i.getProducts.size());
+            Inventory i = reader.readInventory();
+            assertEquals(0, i.getProducts().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
         } 
@@ -45,9 +49,9 @@ class JsonReaderTest extends JsonTest {
 
     @Test  
     void testReaderEmptyPurchaseRecord() {
-        JSonReader reader = new JsonReader("./data/testReaderEmptyInventoryPurchaseRecord.json");
+        JsonReader reader = new JsonReader("./data/testReaderEmptyInventoryPurchaseRecord.json");
         try {
-            PurchaseRecord pr = new PurchaseRecord("./data/testReaderEmptyInventoryPurchaseRecord.json");
+            PurchaseRecord pr = reader.readPurchaseRecord();
             assertEquals(0, pr.getPurchases().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
@@ -56,14 +60,14 @@ class JsonReaderTest extends JsonTest {
 
     @Test 
     void testReaderGeneralInventory() {
-        JSonReader reader = new JsonReader("./data/testReaderGeneralInventoryPurchaseRecord.json");
+        JsonReader reader = new JsonReader("./data/testReaderGeneralInventoryPurchaseRecord.json");
         try {
             Inventory i = reader.readInventory();
             assertEquals(2, i.getProducts().size());
             checkProduct("cake", "123", 12.5, 15.0, 12, i.getProducts().get(0));
             checkProduct("cookie", "456", 5.2, 6.0, 8, i.getProducts().get(1));
         } catch (IOException e) {
-            fail("Couldn't read from file")
+            fail("Couldn't read from file");
         }
     }
 
@@ -73,11 +77,14 @@ class JsonReaderTest extends JsonTest {
         try {
             PurchaseRecord pr = reader.readPurchaseRecord();
             assertEquals(2, pr.getPurchases().size());
-            Map<String, Integer> p2 = new HashMap<String, Integer>;
+            Map<String, Integer> p2 = new HashMap<String, Integer>();
             p2.put("123", 1);
             p2.put("456", 3);
-            checkPurchase(LocalDate.of(2025, 2, 3), Map<String, Integer> = new HashMap<String, Integer>, 20.5, "Cash", false, pr.getPurchases().get(0));
+            Map<String, Integer> none = new HashMap<String, Integer>();
+            checkPurchase(LocalDate.of(2025, 2, 3), none, 20.5, "Cash", false, pr.getPurchases().get(0));
             checkPurchase(LocalDate.of(2024, 12, 13), p2, 24.0, "Credit", true, pr.getPurchases().get(1));
+        } catch (IOException e) {
+            fail("Couldn't read from file");
         }
     }
 }

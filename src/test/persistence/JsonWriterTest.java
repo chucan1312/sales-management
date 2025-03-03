@@ -4,7 +4,9 @@ import model.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,7 +65,7 @@ class JsonWriterTest extends JsonTest {
 
             JsonReader reader = new JsonReader("./data/testWriterEmptyInventoryPurchaseRecord.json");
             pr = reader.readPurchaseRecord();
-            assertEquals(0, pr.getProducts().size());
+            assertEquals(0, pr.getPurchases().size());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -84,14 +86,14 @@ class JsonWriterTest extends JsonTest {
             i.addProduct(p2);
 
             PurchaseRecord pr = new PurchaseRecord();
-            Purchase p1 = new Purchase(10.0, "cash");
-            Purchase p2 = new Purchase(24.15, "credit");
-            p2.setDate(2024, 12, 13);
-            p2.addProduct(p1, 1);
-            p2.addProduct(p2, 2);
-            p2.reviewPurchase();
-            pr.addPurchase(p1);
-            pr.addPurchase(p2);
+            Purchase pc1 = new Purchase(10.0, "cash");
+            Purchase pc2 = new Purchase(24.15, "credit");
+            pc2.setDate(2024, 12, 13);
+            pc2.addProduct(p1, 1);
+            pc2.addProduct(p2, 2);
+            pc2.reviewPurchase();
+            pr.addPurchase(pc1);
+            pr.addPurchase(pc2);
             JsonWriter writer = new JsonWriter("./data/testWriterGeneralInventoryPurchaseRecord.json");
             writer.open();
             writer.writeInventory(i);
@@ -106,12 +108,13 @@ class JsonWriterTest extends JsonTest {
             checkProduct("cupcake", "456", 13.0, 14.5, 12, p2);
 
             pr = reader.readPurchaseRecord();
-            assertEquals(2, pr.getProducts().size());
-            checkPurchase(LocalDate.now(), Map<Product, Integer> purchasedProducts = new HashMap<Product,Integer>(), 10.0, "cash", "false", p1);
-            Map<Product, Integer> purchasedProducts = new HashMap<String, Integer>();
-            purchaseProducts.put("123", 1);
-            purchaseProducts.put("456", 2);
-            checkPurchase(LocalDate.of(2024, 12, 13), purchasedProducts, 24.15, "credit", "true", p2);
+            assertEquals(2, pr.getPurchases().size());
+            Map<String, Integer> none = new HashMap<String,Integer>();
+            checkPurchase(LocalDate.now(), none, 10.0, "cash", false, pc1);
+            Map<String, Integer> purchasedProducts = new HashMap<String, Integer>();
+            purchasedProducts.put("123", 1);
+            purchasedProducts.put("456", 2);
+            checkPurchase(LocalDate.of(2024, 12, 13), purchasedProducts, 24.15, "credit", true, pc2);
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
