@@ -1,19 +1,25 @@
 package ui;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import model.*;
+import persistence.*;
 
 // A sales management application that allows user to track products and purchases
 public class SalesManagement {
+    private static final String JSON_STORE = "data/inventory";
     private Inventory inventory;
     private PurchaseRecord purchaseRecord;
     private Integer currentIndex;
     private static final Integer BOX_LENGTH = 68;
 
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
     private Scanner scanner;
     private boolean isProgramRunning;
 
@@ -36,6 +42,8 @@ public class SalesManagement {
         this.currentIndex = 0;
         this.scanner = new Scanner(System.in);
         this.isProgramRunning = true;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // EFFECTS: display and processes inputs for the main menu
@@ -58,6 +66,9 @@ public class SalesManagement {
         System.out.println("║ [r]: make and record a new purchase                                ║");
         System.out.println("║ [p]: view all purchases from date range                            ║");
         System.out.println("║ [v]: view unreviewed purchases by day (financial reconciliation)   ║");
+        System.out.println("║ [s]: save inventory to file                                        ║");
+        System.out.println("║ [l]: load inventory from file                                      ║");
+        // System.out.println("║ [d]: update a purchase in purchase record                          ║");
         System.out.println("║ [f]: get profit from date range                                    ║");
         System.out.println("║ [q]: exit the application                                          ║");
         printBottom();
@@ -90,8 +101,17 @@ public class SalesManagement {
             case "v":
                 getOneDayPurchasesMethod();
                 break;
+            // case "d":
+            //     updatePurchase();
+            //     break;
             case "f":
                 getProfit();
+                break;
+            case "s":
+                saveInventory();
+                break;
+            case "l":
+                loadInventory();
                 break;
             case "q":
                 quitApplication();
@@ -182,7 +202,7 @@ public class SalesManagement {
             currentIndex = 0;
         }
     } 
-    
+
     // EFFECTS: display the product's information given their id
     public void findProductWithId() {
         printTop();
@@ -559,6 +579,35 @@ public class SalesManagement {
         }
     }
 
+    // // MODIFIES: this
+    // // EFFECTS: 
+    // public void updatePurchase() {
+    //     printTop();
+    //     printTitle("update purchase's information");
+    //     printDivider();
+    //     List<Purchase> result = purchaseRecord.getPurchases();
+    //     if (result.isEmpty()) {
+    //         System.out.println(" Error: No purchase was found. Please try again.");
+    //     }
+    //     else {
+    //         String command = "";
+    //         while (!command.equals("q")) {
+    //             printTop();
+    //             printTitle("update purchase's information");
+    //             printDivider();
+    //             System.out.println("║ [p]: update purchase's sold products                               ║");
+    //             System.out.println("║ [r]: update purchase's received payment                            ║");
+    //             System.out.println("║ [m]: update purchase's payment method                              ║");
+    //             System.out.println("║ [t]: update purchase's quantity                                    ║");
+    //             System.out.println("║ [r]: remove purchase from purchase record                          ║");
+    //             System.out.println("║ [q]: return to the main menu                                       ║");
+    //             printBottom();
+    //             command = this.scanner.nextLine();
+    //             processUpdatePurchaseCommands(command, result);
+    //         }
+    //     } 
+    // }
+
     // EFFECTS: display one purchase's information
     public void displayOnePurchase(Purchase p) {
         String date = p.getDate().toString();
@@ -614,6 +663,29 @@ public class SalesManagement {
 
         Double profit = purchaseRecord.getProfit(startDate, endDate);
         System.out.println("Profit made from " + startDate.toString() + " to " + endDate.toString() + ": " + profit); 
+    }
+
+    // EFFECTS: saves the inventory to file
+    private void saveInventory() {
+        try {
+            jsonWriter.open();
+            jsonWriter.writeInventory(inventory);
+            jsonWriter.close();
+            System.out.println("Saved inventory to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads inventory from file
+    private void loadInventory() {
+        try {
+            inventory = jsonReader.readInventory();
+            System.out.println("Loaded inventory from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 
     // MODIFIES: this
