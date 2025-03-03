@@ -16,7 +16,7 @@ class JsonReaderTest extends JsonTest {
     void testInventoryReaderInvalidFile() {
         try {
             Inventory i = new Inventory();
-            JsonReader reader = new JsonReader("./data/my\0illegal:fileName.json");
+            JsonReader reader = new JsonReader("./data/noSuchFile.json");
             reader.readInventory();
             fail("IOException was expected");
         } catch (IOException e) {
@@ -28,7 +28,7 @@ class JsonReaderTest extends JsonTest {
     void testPurchaseRecordReaderInvalidFile() {
         try {
             PurchaseRecord pr = new PurchaseRecord();
-            JsonReader reader = new JsonReader("./data/my\0illegal:fileName.json");
+            JsonReader reader = new JsonReader("./data/noSuchFile.json");
             reader.readPurchaseRecord();
             fail("IOException was expected");
         } catch (IOException e) {
@@ -38,18 +38,18 @@ class JsonReaderTest extends JsonTest {
 
     @Test 
     void testReaderEmptyInventory() {
-        JsonReader reader = new JsonReader("./data/testReaderEMmptyInventoryPurchaseRecord.json");
+        JsonReader reader = new JsonReader("data/testReaderEmptyInventoryPurchaseRecord");
         try {
             Inventory i = reader.readInventory();
             assertEquals(0, i.getProducts().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
-        } 
+        }
     }
 
     @Test  
     void testReaderEmptyPurchaseRecord() {
-        JsonReader reader = new JsonReader("./data/testReaderEmptyInventoryPurchaseRecord.json");
+        JsonReader reader = new JsonReader("data/testReaderEmptyInventoryPurchaseRecord");
         try {
             PurchaseRecord pr = reader.readPurchaseRecord();
             assertEquals(0, pr.getPurchases().size());
@@ -60,7 +60,7 @@ class JsonReaderTest extends JsonTest {
 
     @Test 
     void testReaderGeneralInventory() {
-        JsonReader reader = new JsonReader("./data/testReaderGeneralInventoryPurchaseRecord.json");
+        JsonReader reader = new JsonReader("data/testReaderGeneral");
         try {
             Inventory i = reader.readInventory();
             assertEquals(2, i.getProducts().size());
@@ -73,7 +73,7 @@ class JsonReaderTest extends JsonTest {
 
     @Test 
     void testReaderGeneralPurchaseRecord() {
-        JsonReader reader = new JsonReader("./data/testReaderGeneralInventoryPurchaseRecord.json");
+        JsonReader reader = new JsonReader("data/testReaderGeneral");
         try {
             PurchaseRecord pr = reader.readPurchaseRecord();
             assertEquals(2, pr.getPurchases().size());

@@ -93,19 +93,19 @@ public class JsonReader {
         JSONArray jsonArray = jsonObject.getJSONArray("Purchase Record");
         for (Object json : jsonArray) {
             JSONObject nextPurchase = (JSONObject) json;
-            addPurchase(pr, nextPurchase);
+            addPurchase(pr, nextPurchase, jsonObject);
         }
     }
     
     // MODIFIES: pr
     // EFFECTS: parses purchase from JSON object and adds it to purchase record
-    private void addPurchase(PurchaseRecord pr, JSONObject jsonObject) {
+    private void addPurchase(PurchaseRecord pr, JSONObject jsonObject, JSONObject ori) {
         Integer year = Integer.valueOf(jsonObject.getString("Date").substring(0,4));
         Integer month = Integer.valueOf(jsonObject.getString("Date").substring(5,7));
         Integer day = Integer.valueOf(jsonObject.getString("Date").substring(8));
         Map<Product, Integer> purchaseProducts = new HashMap<Product, Integer>();
-        JSONArray a = jsonObject.getJSONArray("Purchased Products");
-        Inventory i = parseInventory(jsonObject);
+        JSONArray a = jsonObject.getJSONArray("Purchased products");
+        Inventory i = parseInventory(ori);
         for (Object p : a) {
             JSONObject nextP = (JSONObject) p;
             Product product = i.findProductWithId(nextP.getString("ID"));
@@ -122,5 +122,6 @@ public class JsonReader {
         if (reviewedStatus) {
             p.reviewPurchase();
         }
+        pr.addPurchase(p);
     }
 }
