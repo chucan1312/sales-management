@@ -1,5 +1,9 @@
 package model;
 
+import java.util.Collection;
+
+import org.json.JSONObject;
+
 // Represents a product with a name, a unique ID, a selling price, an import/unit price, and its quantity
 public class Product {
     private String name;
@@ -70,6 +74,16 @@ public class Product {
 
     public String getId() {
         return id;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Name", name);
+        json.put("ID", id);
+        json.put("Unit price", unitPrice);
+        json.put("Selling price", sellingPrice);
+        json.put("Quantity", quantity);
+        return json;
     }
 
 }

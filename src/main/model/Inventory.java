@@ -1,10 +1,16 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 // Represent a store's inventory with a list of products
-public class Inventory {
+public class Inventory implements Writable {
     private List<Product> products;
    
     // EFFECTS: construct an inventory with an empty product list
@@ -61,5 +67,23 @@ public class Inventory {
     public List<Product> getProducts() {
         return products;
     }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Inventory", productsToJson());
+        return json;
+    }
+
+    private JSONArray productsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Product p : products) {
+            jsonArray.put(p.toJson());
+        }
+
+        return jsonArray;
+    }
+    
 
 }
