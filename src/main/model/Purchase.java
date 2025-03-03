@@ -1,8 +1,12 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 // Represent one single purchase with time, a list of products purchased, total calculated cost of those products, 
 // actual amount paid by customer, a payment method and a payment review status 

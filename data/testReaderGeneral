@@ -14,30 +14,5 @@
             "Selling price": 6.0,
             "Quantity": 8 
         }
-    ],
-    "Purchase Record": [
-        {
-            "Date": "2025-02-03",
-            "Purchased products": [],
-            "Actual paid amount": 20.5,
-            "Payment method": "Cash",
-            "Reviewed status": false
-        },
-        {
-            "Date": "2024-12-13",
-            "Purchased products": [
-                {
-                    "ID": "123",
-                    "Amount": 1
-                },
-                {
-                    "ID": "456",
-                    "Amount": 3
-                }
-            ],
-            "Actual paid amount": 24.0,
-            "Payment method": "Credit",
-            "Reviewed status": true
-        }
     ]
 }

@@ -29,14 +29,6 @@ public class JsonReader {
         return parseInventory(jsonObject);
     }
 
-    // EFFECTS: reads purchase record from file and returns it;
-    // throws IOException if an error occurs reading date from file
-    public PurchaseRecord readPurchaseRecord() throws IOException {
-        String jsonData = readFile(source);
-        JSONObject jsonObject = new JSONObject(jsonData);
-        return parsePurchaseRecord(jsonObject);
-    }
-
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
@@ -53,13 +45,6 @@ public class JsonReader {
         Inventory i = new Inventory();
         addProducts(i, jsonObject);
         return i;
-    }
-
-    // EFFECTS: parses purchase record from JSON object and returns it
-    private PurchaseRecord parsePurchaseRecord(JSONObject jsonObject) {
-        PurchaseRecord pr = new PurchaseRecord();
-        addPurchases(pr, jsonObject);
-        return pr;
     }
 
     // MODIFIES: i
@@ -86,42 +71,4 @@ public class JsonReader {
         i.addProduct(p);
     }
 
-
-    // MODIFIES: pr
-    // EFFECTS: parses purchases from JSON object and adds them to purchase record
-    private void addPurchases(PurchaseRecord pr, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("Purchase Record");
-        for (Object json : jsonArray) {
-            JSONObject nextPurchase = (JSONObject) json;
-            addPurchase(pr, nextPurchase, jsonObject);
-        }
-    }
-    
-    // MODIFIES: pr
-    // EFFECTS: parses purchase from JSON object and adds it to purchase record
-    private void addPurchase(PurchaseRecord pr, JSONObject jsonObject, JSONObject ori) {
-        Integer year = Integer.valueOf(jsonObject.getString("Date").substring(0,4));
-        Integer month = Integer.valueOf(jsonObject.getString("Date").substring(5,7));
-        Integer day = Integer.valueOf(jsonObject.getString("Date").substring(8));
-        Map<Product, Integer> purchaseProducts = new HashMap<Product, Integer>();
-        JSONArray a = jsonObject.getJSONArray("Purchased products");
-        Inventory i = parseInventory(ori);
-        for (Object p : a) {
-            JSONObject nextP = (JSONObject) p;
-            Product product = i.findProductWithId(nextP.getString("ID"));
-            purchaseProducts.put(product, nextP.getInt("Amount"));
-        }
-        Double actualPaidAmount = jsonObject.getDouble("Actual paid amount");
-        String paymentMethod = jsonObject.getString("Payment method");
-        Boolean reviewedStatus = jsonObject.getBoolean("Reviewed status");
-        Purchase p = new Purchase(actualPaidAmount, paymentMethod);
-        p.setDate(year, month, day);
-        for (Map.Entry<Product, Integer> e : purchaseProducts.entrySet()) {
-            p.addProduct(e.getKey(), e.getValue());
-        }
-        if (reviewedStatus) {
-            p.reviewPurchase();
-        }
-        pr.addPurchase(p);
-    }
 }

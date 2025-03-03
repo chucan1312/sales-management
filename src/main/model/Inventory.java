@@ -75,7 +75,7 @@ public class Inventory implements Writable {
         return json;
     }
 
-    private JSONArray productsToJson() {
+    public JSONArray productsToJson() {
         JSONArray jsonArray = new JSONArray();
 
         for (Product p : products) {

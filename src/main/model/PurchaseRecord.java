@@ -4,6 +4,12 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 import java.util.List;
 
 // Represents a record of all purchases made
@@ -70,5 +76,5 @@ public class PurchaseRecord {
     public List<Purchase> getPurchases() {
         return purchases; 
     }
-   
+
 }
