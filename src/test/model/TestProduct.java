@@ -76,6 +76,8 @@ public class TestProduct {
     void testSetter() {
         p.setSellingPrice(15.99);
         p.setUnitPrice(14.5);
+        p.setName("OMFG");
+        assertEquals("OMFG", p.getName());
         assertEquals(15.99, p.getSellingPrice());
         assertEquals(14.5, p.getUnitPrice());
     }
