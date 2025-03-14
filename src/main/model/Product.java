@@ -4,8 +4,10 @@ import java.util.Collection;
 
 import org.json.JSONObject;
 
+import persistence.Writable;
+
 // Represents a product with a name, a unique ID, a selling price, an import/unit price, and its quantity
-public class Product {
+public class Product implements Writable {
     private String name;
     private String id;
     private Double sellingPrice; 

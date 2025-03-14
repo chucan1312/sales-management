@@ -8,9 +8,11 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import persistence.Writable;
+
 // Represent one single purchase with time, a list of products purchased, total calculated cost of those products, 
 // actual amount paid by customer, a payment method and a payment review status 
-public class Purchase {
+public class Purchase implements Writable {
     private LocalDate date;
     private Map<Product, Integer> purchasedProducts;
     private Double totalCost;
@@ -98,6 +100,12 @@ public class Purchase {
 
     public void setDate(Integer year, Integer month, Integer day) {
         date = LocalDate.of(year, month, day);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toJson'");
     }
     
 }

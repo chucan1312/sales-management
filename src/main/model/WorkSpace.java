@@ -1,7 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 // Represent a workspace with an inventory and a purchase record
-public class WorkSpace {
+public class WorkSpace implements Writable {
     private Inventory i;
     private PurchaseRecord pr;
 
@@ -17,5 +21,11 @@ public class WorkSpace {
 
     public PurchaseRecord getPurchaseRecord() {
         return pr;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toJson'");
     }
 }
