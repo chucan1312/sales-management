@@ -7,6 +7,15 @@ public class WorkSpace {
 
     // EFFECTS: Construct a workspace with a new inventory and purchase record
     public WorkSpace() {
-        // stub;
+        i = new Inventory();
+        pr = new PurchaseRecord();
+    }
+
+    public Inventory getInventory() {
+        return i;
+    }
+
+    public PurchaseRecord getPurchaseRecord() {
+        return pr;
     }
 }
