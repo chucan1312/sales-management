@@ -15,6 +15,7 @@ public class SalesManagement {
     private static final String JSON_STORE = "data/inventory";
     private Inventory inventory;
     private PurchaseRecord purchaseRecord;
+    private WorkSpace workSpace;
     private Integer currentIndex;
     private static final Integer BOX_LENGTH = 68;
 
@@ -37,8 +38,9 @@ public class SalesManagement {
     // MODIFIES: this
     // EFFECTS: initializes the application with the starting state
     public void init() {
-        this.inventory = new Inventory();
-        this.purchaseRecord = new PurchaseRecord();
+        this.workSpace = new WorkSpace();
+        this.inventory = workSpace.getInventory();
+        this.purchaseRecord = workSpace.getPurchaseRecord();
         this.currentIndex = 0;
         this.scanner = new Scanner(System.in);
         this.isProgramRunning = true;
