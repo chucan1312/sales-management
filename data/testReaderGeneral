@@ -14,5 +14,30 @@
             "Selling price": 6.0,
             "Quantity": 8 
         }
+    ],
+    "Purchase Record": [
+        {
+            "Date": "2024-12-13",
+            "Purchased Products": [
+                {
+                    "Product's ID": "123",
+                    "Quantity": 1
+                },
+                {
+                    "Product's ID": "456",
+                    "Quantity": 2
+                }
+            ],
+            "Actual Paid Amount": 24.0,
+            "Payment Method": "Cash",
+            "Reviewed Status": true
+        },
+        {
+            "Date": "2025-3-14",
+            "Purchased Products": [],
+            "Actual Paid Amount": 7.0,
+            "Payment Method": "E-transfer",
+            "Reviewed Status": false
+        }
     ]
 }
