@@ -21,12 +21,12 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads inventory from file and returns it;
+    // EFFECTS: reads workspace from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Inventory readInventory() throws IOException {
+    public WorkSpace read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseInventory(jsonObject);
+        return parseWorkSpace(jsonObject);
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -38,6 +38,11 @@ public class JsonReader {
         }
 
         return contentBuilder.toString();
+    }
+
+    // EFFECTS: parses workspace from JSON object and returns it
+    private WorkSpace parseWorkSpace(JSONObject jsonObject) {
+        // stub
     }
 
     // EFFECTS: parses inventory from JSON object and returns it
@@ -58,7 +63,7 @@ public class JsonReader {
     }
 
     // MODIFIES: i
-    // EFFECTS: parse product and add it to inventory
+    // EFFECTS: parses product and adds it to inventory
     private void addProduct(Inventory i, JSONObject jsonObject) {
         String name = jsonObject.getString("Name");
         String id = jsonObject.getString("ID");
@@ -71,4 +76,20 @@ public class JsonReader {
         i.addProduct(p);
     }
 
+    // EFFECTS: parses purchase record from JSON object and returns it
+    private PurchaseRecord parsePurchaseRecord(JSONObject jsonObject) {
+        // stub 
+    }
+
+    // MODIFIES: pr
+    // EFFECTS: parses purchases from JSON object and adds them to inventory 
+    private void addPurchases(PurchaseRecord pr, JSONObject jsonObject) {
+
+    }
+
+    // MODIFIES: pr
+    // EFFECTS: parses purchase and adds it to inventory 
+    private void addPurchase(PurchaseRecord pr, JSONObject jsonObject) {
+
+    }
 }

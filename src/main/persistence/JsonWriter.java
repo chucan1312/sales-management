@@ -8,7 +8,7 @@ import org.json.JSONTokener;
 
 import java.io.*;
 
-// Represents a writer that writes JSON representation of inventory and purchase record to file
+// Represents a writer that writes JSON representation of workspace and purchase record to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -27,8 +27,8 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of inventory to file
-    public void writeInventory(Inventory i) {
+    // EFFECTS: writes JSON representation of workspace to file
+    public void write(Inventory i) {
         JSONObject json = i.toJson();
         saveToFile(json.toString(TAB));
     }
