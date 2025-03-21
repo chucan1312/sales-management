@@ -1,6 +1,7 @@
 package persistence;
 import model.Inventory;
 import model.PurchaseRecord;
+import model.WorkSpace;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,8 +29,8 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of workspace to file
-    public void write(Inventory i) {
-        JSONObject json = i.toJson();
+    public void write(WorkSpace ws) {
+        JSONObject json = ws.toJson();
         saveToFile(json.toString(TAB));
     }
 
