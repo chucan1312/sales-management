@@ -58,6 +58,10 @@ class JsonWriterTest extends JsonTest {
             p1.restock(11);
             p2.restock(14);
 
+            WorkSpace ws = new WorkSpace();
+            ws.getInventory().addProduct(p1);
+            ws.getInventory().addProduct(p2);
+
             Purchase pc1 = new Purchase(24.0, "Cash");
             Purchase pc2 = new Purchase(7.0, "E-transfer");
             pc1.setDate(2024,12,13);
@@ -65,10 +69,7 @@ class JsonWriterTest extends JsonTest {
             pc1.addProduct(p2, 2);
             pc1.reviewPurchase();
             pc2.setDate(2025,03,14);
-            
-            WorkSpace ws = new WorkSpace();
-            ws.getInventory().addProduct(p1);
-            ws.getInventory().addProduct(p2);
+
             ws.getPurchaseRecord().addPurchase(pc1);
             ws.getPurchaseRecord().addPurchase(pc2);
 
@@ -83,8 +84,8 @@ class JsonWriterTest extends JsonTest {
             List<Purchase> purchases = ws.getPurchaseRecord().getPurchases();
 
             assertEquals(2, products.size());
-            checkProduct("cake", "123", 12.5, 15.0, 10, products.get(0));
-            checkProduct("cookie", "456", 5.2, 14.5, 12, products.get(1));
+            checkProduct("cake", "123", 12.0, 15.0, 10, products.get(0));
+            checkProduct("cupcake", "456", 3.0, 14.5, 12, products.get(1));
 
             assertEquals(2, purchases.size());
             LocalDate date1 = LocalDate.of(2024, 12, 13);
