@@ -13,7 +13,7 @@ import persistence.Writable;
 import java.util.List;
 
 // Represents a record of all purchases made
-public class PurchaseRecord implements Writable {
+public class PurchaseRecord {
     private List<Purchase> purchases;
    
     // EFFECTS: construct a record with an empty list of purchases
@@ -77,10 +77,12 @@ public class PurchaseRecord implements Writable {
         return purchases; 
     }
 
-    @Override
-    public JSONObject toJson() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toJson'");
+    public JSONArray purchasesToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Purchase p : purchases) {
+            jsonArray.put(p.toJson());
+        }
+        return jsonArray;
     }
 
 }

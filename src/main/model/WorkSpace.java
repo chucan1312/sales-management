@@ -33,7 +33,9 @@ public class WorkSpace implements Writable {
 
     @Override
     public JSONObject toJson() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toJson'");
+        JSONObject json = new JSONObject();
+        json.put("Inventory", i.productsToJson());
+        json.put("Purchase Record", pr.purchasesToJson());
+        return json;
     }
 }

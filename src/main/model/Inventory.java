@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 // Represent a store's inventory with a list of products
-public class Inventory implements Writable {
+public class Inventory {
     private List<Product> products;
    
     // EFFECTS: construct an inventory with an empty product list
@@ -68,13 +68,6 @@ public class Inventory implements Writable {
         return products;
     }
 
-    @Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        json.put("Inventory", productsToJson());
-        return json;
-    }
-
     public JSONArray productsToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -85,5 +78,4 @@ public class Inventory implements Writable {
         return jsonArray;
     }
     
-
 }

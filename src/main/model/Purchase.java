@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -104,8 +105,29 @@ public class Purchase implements Writable {
 
     @Override
     public JSONObject toJson() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toJson'");
+        JSONObject json = new JSONObject();
+        String month = Integer.toString(date.getMonthValue());
+        String day = Integer.toString(date.getDayOfMonth());
+        if (month.length() == 1) {
+            month = "0" + month;
+        }
+        if (day.length() == 1) {
+            day = "0" + day;
+        }
+        String stringDate = Integer.toString(date.getYear()) + "-" + month + "-" + day;
+        json.put("Date", stringDate);
+        JSONArray pps = new JSONArray();
+        for (Map.Entry<Product, Integer> entry : purchasedProducts.entrySet()) {
+            JSONObject pp = new JSONObject();
+            pp.put("Product's ID", entry.getKey().getId());
+            pp.put("Quantity", entry.getValue()); 
+            pps.put(pp);
+        }
+        json.put("Purchased Products", pps);
+        json.put("Actual Paid Amount", actualPaidAmount);
+        json.put("Payment Method", paymentMethod);
+        json.put("Reviewed Status", reviewedStatus);
+        return json;
     }
     
 }
