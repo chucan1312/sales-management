@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.json.*;
@@ -42,7 +44,12 @@ public class JsonReader {
 
     // EFFECTS: parses workspace from JSON object and returns it
     private WorkSpace parseWorkSpace(JSONObject jsonObject) {
-        // stub
+        WorkSpace ws = new WorkSpace();
+        Inventory i = this.parseInventory(jsonObject);
+        PurchaseRecord pr = this.parsePurchaseRecord(jsonObject);
+        ws.setInventory(i);
+        ws.setPurchaseRecord(pr);
+        return ws;
     }
 
     // EFFECTS: parses inventory from JSON object and returns it
@@ -78,18 +85,59 @@ public class JsonReader {
 
     // EFFECTS: parses purchase record from JSON object and returns it
     private PurchaseRecord parsePurchaseRecord(JSONObject jsonObject) {
-        // stub 
+        PurchaseRecord pr = new PurchaseRecord();
+        addPurchases(pr, jsonObject);
+        return pr;
     }
 
     // MODIFIES: pr
     // EFFECTS: parses purchases from JSON object and adds them to inventory 
     private void addPurchases(PurchaseRecord pr, JSONObject jsonObject) {
-
+        JSONArray jsonArray = jsonObject.getJSONArray("Purchase Record");
+        for (Object json : jsonArray) {
+            JSONObject nextPurchase = (JSONObject) json;
+            addPurchase(pr, nextPurchase, jsonObject);
+        }
     }
 
     // MODIFIES: pr
     // EFFECTS: parses purchase and adds it to inventory 
-    private void addPurchase(PurchaseRecord pr, JSONObject jsonObject) {
+    private void addPurchase(PurchaseRecord pr, JSONObject jsonObject, JSONObject workspace) {
+        String dateString = jsonObject.getString("Date");
+        int year = Integer.parseInt(dateString.substring(0,4));
+        int month = Integer.parseInt(dateString.substring(5, 7));
+        int day = Integer.parseInt(dateString.substring(8));
 
+        Double actualPaidAmount = jsonObject.getDouble("Actual Paid Amount");
+        String paymentMethod = jsonObject.getString("Payment Method");
+        Boolean reviewedStatus = jsonObject.getBoolean("Reviewed Status");
+
+        Purchase p = new Purchase(actualPaidAmount, paymentMethod);
+        p.setDate(year, month, day);
+        if (reviewedStatus) {
+            p.reviewPurchase();
+        }
+        Map<String, Integer> map = parsePurchasedProducts(jsonObject);
+        Set<String> all = map.keySet();
+        for (String one : all) {
+            Integer amount = map.get(one);
+            Inventory i = this.parseInventory(workspace);
+            Product product = i.findProductWithId(one);        
+            p.addProduct(product, amount);
+        }
+        pr.addPurchase(p);
+    }
+
+        
+    private Map<String, Integer> parsePurchasedProducts(JSONObject jsonObject) {
+        Map<String, Integer> map = new HashMap();
+        JSONArray jsonArray = jsonObject.getJSONArray("Purchased Products");
+        for (Object o : jsonArray) {
+            JSONObject json = (JSONObject) o;
+            String id = json.getString("Product's ID");
+            Integer amount = json.getInt("Quantity");
+            map.put(id, amount);
+        }
+        return map;
     }
 }

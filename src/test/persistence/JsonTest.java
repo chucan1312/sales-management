@@ -16,6 +16,13 @@ public class JsonTest {
         assertEquals(sellingPrice, p.getSellingPrice());
         assertEquals(quantity, p.getQuantity());
     }
-}
 
+    protected void checkPurchase(LocalDate date, Map<Product, Integer> purchasedProducts, Double actualPaidAmount, String paymentMethod, Boolean reviewedStatus, Purchase p) {
+        assertEquals(date, p.getDate());
+        assertEquals(purchasedProducts, p.getPurchasedProducts());
+        assertEquals(actualPaidAmount, p.getActualPaidAmount());
+        assertEquals(paymentMethod, p.getPaymentMethod());
+        assertEquals(reviewedStatus, p.getReviewedStatus());
+    }
+}
 

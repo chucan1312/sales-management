@@ -23,6 +23,14 @@ public class WorkSpace implements Writable {
         return pr;
     }
 
+    public void setInventory(Inventory i) {
+        this.i = i;
+    }
+
+    public void setPurchaseRecord(PurchaseRecord pr) {
+        this.pr = pr;
+    }
+
     @Override
     public JSONObject toJson() {
         // TODO Auto-generated method stub
