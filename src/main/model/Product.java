@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -94,9 +95,6 @@ public class Product implements Writable {
         int result = 1;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((sellingPrice == null) ? 0 : sellingPrice.hashCode());
-        result = prime * result + ((unitPrice == null) ? 0 : unitPrice.hashCode());
-        result = prime * result + quantity;
         return result;
     }
 
@@ -109,17 +107,7 @@ public class Product implements Writable {
         if (getClass() != obj.getClass())
             return false;
         Product other = (Product) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
+        return Objects.equals(id, other.id) && Objects.equals(name, other.name);
     }
 
     
