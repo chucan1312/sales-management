@@ -1,0 +1,43 @@
+{
+    "Inventory": [
+        {
+            "Quantity": 10,
+            "ID": "123",
+            "Unit price": 12,
+            "Selling price": 15,
+            "Name": "cake"
+        },
+        {
+            "Quantity": 12,
+            "ID": "456",
+            "Unit price": 3,
+            "Selling price": 14.5,
+            "Name": "cupcake"
+        }
+    ],
+    "Purchase Record": [
+        {
+            "Purchased Products": [
+                {
+                    "Quantity": 1,
+                    "Product's ID": "123"
+                },
+                {
+                    "Quantity": 2,
+                    "Product's ID": "456"
+                }
+            ],
+            "Actual Paid Amount": 24,
+            "Payment Method": "Cash",
+            "Reviewed Status": true,
+            "Date": "2024-12-13"
+        },
+        {
+            "Purchased Products": [],
+            "Actual Paid Amount": 7,
+            "Payment Method": "E-transfer",
+            "Reviewed Status": false,
+            "Date": "2025-03-14"
+        }
+    ]
+}

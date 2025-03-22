@@ -12,9 +12,7 @@ import persistence.*;
 
 // A sales management application that allows user to track products and purchases
 public class SalesManagement {
-    private static final String JSON_STORE = "data/inventory";
-    private Inventory inventory;
-    private PurchaseRecord purchaseRecord;
+    private static final String JSON_STORE = "./data/workspace";
     private WorkSpace workSpace;
     private Integer currentIndex;
     private static final Integer BOX_LENGTH = 68;
@@ -38,9 +36,7 @@ public class SalesManagement {
     // MODIFIES: this
     // EFFECTS: initializes the application with the starting state
     public void init() {
-        this.workSpace = new WorkSpace();
-        this.inventory = workSpace.getInventory();
-        this.purchaseRecord = workSpace.getPurchaseRecord();
+        this.workSpace = new WorkSpace(new Inventory(), new PurchaseRecord());
         this.currentIndex = 0;
         this.scanner = new Scanner(System.in);
         this.isProgramRunning = true;
@@ -68,8 +64,8 @@ public class SalesManagement {
         System.out.println("║ [r]: make and record a new purchase                                ║");
         System.out.println("║ [p]: view all purchases from date range                            ║");
         System.out.println("║ [v]: view unreviewed purchases by day (financial reconciliation)   ║");
-        System.out.println("║ [s]: save inventory to file                                        ║");
-        System.out.println("║ [l]: load inventory from file                                      ║");
+        System.out.println("║ [s]: save data to file                                             ║");
+        System.out.println("║ [l]: load data from file                                           ║");
         // System.out.println("║ [d]: update a purchase in purchase record                          ║");
         System.out.println("║ [f]: get profit from date range                                    ║");
         System.out.println("║ [q]: exit the application                                          ║");
@@ -110,10 +106,10 @@ public class SalesManagement {
                 getProfit();
                 break;
             case "s":
-                saveInventory();
+                save();
                 break;
             case "l":
-                loadInventory();
+                load();
                 break;
             case "q":
                 quitApplication();
@@ -122,7 +118,8 @@ public class SalesManagement {
         }
     }
 
-    // EFFECTS: create a new product and add to inventory
+    // MODIFIES: inventory, workSpace
+    // EFFECTS: create a new product, add to inventory and update workspace
     private void addProduct() {
         printTop();
         printTitle("add product");
@@ -133,7 +130,7 @@ public class SalesManagement {
         
         System.out.println("Please enter the product's ID: ");
         String id = this.scanner.nextLine();
-        for (Product p : inventory.getProducts()) {
+        for (Product p : workSpace.getInventory().getProducts()) {
             if (p.getId().equals(id)) {
                 System.out.println(" ERROR: ID already existed. Please try again.");
                 return;
@@ -152,7 +149,7 @@ public class SalesManagement {
         processAddProductCommand(input, p);
         
         if (input.equals("y") || input.equals("n")) {
-            inventory.addProduct(p);
+            workSpace.getInventory().addProduct(p);
             System.out.println(" Product successfully added to inventory!");
         }
     }
@@ -178,7 +175,7 @@ public class SalesManagement {
 
     // EFFECTS: display all products' information, one product at a time
     public void getProducts() {
-        List<Product> result = inventory.getProducts();
+        List<Product> result = workSpace.getInventory().getProducts();
 
         if (result.isEmpty()) {
             System.out.println(" ERROR: No product was found. Please try again.");
@@ -213,7 +210,7 @@ public class SalesManagement {
         
         System.out.println(" Please enter the product's ID: ");
         String typedId = this.scanner.nextLine();
-        Product p = this.inventory.findProductWithId(typedId);
+        Product p = workSpace.getInventory().findProductWithId(typedId);
         if (p == null) {
             System.out.println(" ERROR: No product was found. Please try again.");
         }
@@ -232,7 +229,7 @@ public class SalesManagement {
         
         System.out.println(" Please enter the search term: ");
         String searchTerm = this.scanner.nextLine();
-        List<Product> result = inventory.findProductWithName(searchTerm);
+        List<Product> result = workSpace.getInventory().findProductWithName(searchTerm);
         if (result.isEmpty()) {
             System.out.println(" ERROR: No product was found. Please try again.");
             return;
@@ -309,14 +306,14 @@ public class SalesManagement {
         
         System.out.println(" Please enter the product's ID: ");
         String typedId = this.scanner.nextLine();
-        Product p = this.inventory.findProductWithId(typedId);
+        Product p = workSpace.getInventory().findProductWithId(typedId);
         if (p == null) {
             System.out.println(" Error: No product was found. Please try again.");
         }
         else {
             String command = "";
             while (!command.equals("q")) {
-                if (!inventory.getProducts().contains(p)) {
+                if (!workSpace.getInventory().getProducts().contains(p)) {
                     return;
                 }
                 else {
@@ -371,7 +368,7 @@ public class SalesManagement {
                 String command = this.scanner.nextLine();
                 switch (command) {
                     case "y":
-                        inventory.removeProduct(p);
+                        workSpace.getInventory().removeProduct(p);
                         System.out.println("Product successfully removed.");
                         return;
                     case "n":
@@ -409,7 +406,7 @@ public class SalesManagement {
             processAddPurchaseCommand(input, p);
         
         }
-        purchaseRecord.addPurchase(p);
+        workSpace.getPurchaseRecord().addPurchase(p);
         System.out.println(" Purchase successfully recorded!");
     }
 
@@ -419,7 +416,7 @@ public class SalesManagement {
             case "y":
                 System.out.println("Please enter the product's ID: ");
                 String id = this.scanner.nextLine();
-                Product product = this.inventory.findProductWithId(id);
+                Product product = workSpace.getInventory().findProductWithId(id);
                 
                 if (product == null) {
                     System.out.println(" ERROR: No product was found. Please try again.");
@@ -475,7 +472,7 @@ public class SalesManagement {
             }
         }
 
-        List<Purchase> result = purchaseRecord.getPurchasesBetween(startDate, endDate);
+        List<Purchase> result = workSpace.getPurchaseRecord().getPurchasesBetween(startDate, endDate);
         if (result.isEmpty()) {
             System.out.println(" There's no purchase recorded from " + startDate.toString() + " to " + endDate.toString() + ".");
         }
@@ -554,7 +551,7 @@ public class SalesManagement {
         String paymentMethod = this.scanner.nextLine();
         LocalDate date = LocalDate.of(year, month, day);
 
-        List<Purchase> result = purchaseRecord.getOneDayPurchasesMethod(date, paymentMethod);
+        List<Purchase> result = workSpace.getPurchaseRecord().getOneDayPurchasesMethod(date, paymentMethod);
         if (result.isEmpty()) {
             System.out.println(" There's no unreviewed purchase on " + date.toString() + " using " + paymentMethod + ".");
         }
@@ -663,28 +660,28 @@ public class SalesManagement {
             }
         }
 
-        Double profit = purchaseRecord.getProfit(startDate, endDate);
+        Double profit = workSpace.getPurchaseRecord().getProfit(startDate, endDate);
         System.out.println("Profit made from " + startDate.toString() + " to " + endDate.toString() + ": " + profit); 
     }
 
-    // EFFECTS: saves the inventory to file
-    private void saveInventory() {
+    // EFFECTS: saves the workspace to file
+    private void save() {
         try {
             jsonWriter.open();
-            jsonWriter.writeInventory(inventory);
+            jsonWriter.write(workSpace);
             jsonWriter.close();
-            System.out.println("Saved inventory to " + JSON_STORE);
+            System.out.println("Saved workspace to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: loads inventory from file
-    private void loadInventory() {
+    // EFFECTS: loads the workspace from file
+    private void load() {
         try {
-            inventory = jsonReader.readInventory();
-            System.out.println("Loaded inventory from " + JSON_STORE);
+            workSpace = jsonReader.read();
+            System.out.println("Loaded workspace from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
