@@ -20,7 +20,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            WorkSpace ws = new WorkSpace();
+            WorkSpace ws = new WorkSpace(new Inventory(), new PurchaseRecord());
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -32,7 +32,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterEmptyInventoryPurchaseRecord() {
         try {
-            WorkSpace ws = new WorkSpace();
+            WorkSpace ws = new WorkSpace(new Inventory(), new PurchaseRecord());
             JsonWriter writer = new JsonWriter("data/testWriterEmptyInventory");
             writer.open();
             writer.write(ws);
@@ -58,7 +58,7 @@ class JsonWriterTest extends JsonTest {
             p1.restock(11);
             p2.restock(14);
 
-            WorkSpace ws = new WorkSpace();
+            WorkSpace ws = new WorkSpace(new Inventory(), new PurchaseRecord());
             ws.getInventory().addProduct(p1);
             ws.getInventory().addProduct(p2);
 

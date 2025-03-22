@@ -44,11 +44,9 @@ public class JsonReader {
 
     // EFFECTS: parses workspace from JSON object and returns it
     private WorkSpace parseWorkSpace(JSONObject jsonObject) {
-        WorkSpace ws = new WorkSpace();
         Inventory i = this.parseInventory(jsonObject);
         PurchaseRecord pr = this.parsePurchaseRecord(jsonObject);
-        ws.setInventory(i);
-        ws.setPurchaseRecord(pr);
+        WorkSpace ws = new WorkSpace(i, pr);
         return ws;
     }
 

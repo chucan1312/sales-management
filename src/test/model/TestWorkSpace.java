@@ -13,7 +13,7 @@ public class TestWorkSpace {
 
     @Test
     void testConstructor() {
-        ws = new WorkSpace();
+        ws = new WorkSpace(new Inventory(), new PurchaseRecord());
         assertTrue(ws.getInventory().getProducts().isEmpty());
         assertTrue(ws.getPurchaseRecord().getPurchases().isEmpty());
     }

@@ -16,7 +16,7 @@ class JsonReaderTest extends JsonTest {
     @Test
     void testInventoryReaderInvalidFile() {
         try {
-            WorkSpace ws = new WorkSpace();
+            WorkSpace ws = new WorkSpace(new Inventory(), new PurchaseRecord());
             JsonReader reader = new JsonReader("./data/noSuchFile.json");
             ws = reader.read();
             fail("IOException was expected");
@@ -29,7 +29,7 @@ class JsonReaderTest extends JsonTest {
     void testReaderEmptyInventory() {
         JsonReader reader = new JsonReader("./data/testReaderEmpty");
         try {
-            WorkSpace ws = new WorkSpace();
+            WorkSpace ws = new WorkSpace(new Inventory(), new PurchaseRecord());
             ws = reader.read();
             assertTrue(ws.getInventory().getProducts().isEmpty());
             assertTrue(ws.getPurchaseRecord().getPurchases().isEmpty());
@@ -42,7 +42,7 @@ class JsonReaderTest extends JsonTest {
     void testReaderGeneralInventory() {
         JsonReader reader = new JsonReader("./data/testReaderGeneral");
         try {
-            WorkSpace ws = new WorkSpace();
+            WorkSpace ws = new WorkSpace(new Inventory(), new PurchaseRecord());
             ws = reader.read();
             List<Product> products = ws.getInventory().getProducts();
             List<Purchase> purchases = ws.getPurchaseRecord().getPurchases();
