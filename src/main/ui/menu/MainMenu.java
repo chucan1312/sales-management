@@ -3,6 +3,7 @@ package ui.menu;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -41,6 +42,7 @@ public class MainMenu extends JFrame implements ActionListener {
         JButton btn = new JButton(command);
         btn.setActionCommand(command);
         btn.addActionListener(this);
+        btn.setFont(new Font("Tahoma", Font.BOLD, 15));
         add(btn);
     }
 
@@ -65,7 +67,7 @@ public class MainMenu extends JFrame implements ActionListener {
     // EFFECTS: passes workspace into a new AddProductMenu() instantiation 
     private void openAddProductMenu(WorkSpace workSpace) {
         dispose();
-        new AddProductMenu(workSpace, WIDTH, HEIGHT);
+        new AddProductMenu(workSpace);
     }
 
     // // EFFECTS: passes workspace into a new InventoryMenu() instantiation 
