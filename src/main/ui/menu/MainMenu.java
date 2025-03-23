@@ -2,28 +2,35 @@ package ui.menu;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import java.awt.event.*;
-
-import org.w3c.dom.events.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import model.*;
+import persistence.*;
 
 public class MainMenu extends JFrame implements ActionListener {
+    private static final String JSON_STORE = "./data/workspace";
     public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
 
-    private WorkSpace workspace;
+    private WorkSpace workSpace;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
     
-    public MainMenu() {
+    public MainMenu(WorkSpace workSpace) {
         super("Sales Management App");
+        this.workSpace = workSpace;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(new FlowLayout());
         addButton("Add product");
-        addButton("View all products in inventory");
+        // addButton("View all products in inventory");
         addButton("Save data");
         addButton("Load data");
+        pack();
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -40,12 +47,12 @@ public class MainMenu extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "Add Product":
-                openAddProductMenu(workspace);
+            case "Add product":
+                openAddProductMenu(workSpace);
                 break;
-            case "View all products in inventory":
-                openInventoryMenu(workspace);
-                break;
+            // case "View all products in inventory":
+            //     openInventoryMenu(workSpace);
+            //     break;
             case "Save data":
                 save();
                 break;
@@ -55,23 +62,36 @@ public class MainMenu extends JFrame implements ActionListener {
         }
     }
 
-    // EFFECTS: instantiates a new AddProductMenu() with current workspace
-    private void openAddProductMenu(WorkSpace workspace) {
-        // stub
+    // EFFECTS: passes workspace into a new AddProductMenu() instantiation 
+    private void openAddProductMenu(WorkSpace workSpace) {
+        dispose();
+        new AddProductMenu(workSpace, WIDTH, HEIGHT);
     }
 
-    // EFFECTS: instantiates a new InventoryMenu() with current worksapce
-    private void openInventoryMenu(WorkSpace workspace) {
-        // stub
-    }
+    // // EFFECTS: passes workspace into a new InventoryMenu() instantiation 
+    // private void openInventoryMenu(WorkSpace workspace) {
+    //     // stub
+    // }
 
     // EFFECTS: saves the workspace to file
     private void save() {
-
+        try {
+            jsonWriter.open();
+            jsonWriter.write(workSpace);
+            jsonWriter.close();
+            JOptionPane.showMessageDialog(this, "Saved workspace to: " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Unable to write to file: " + JSON_STORE);
+        }
     }
 
     // EFFECTS: loads the workspace from file
     private void load() {
-        
+        try {
+            workSpace = jsonReader.read();
+            JOptionPane.showMessageDialog(this,"Loaded workspace from " + JSON_STORE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this,"Unable to read from file: " + JSON_STORE);
+        }
     }
 }
