@@ -28,7 +28,7 @@ public class MainMenu extends JFrame implements ActionListener {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(new FlowLayout());
         addButton("Add product");
-        // addButton("View all products in inventory");
+        addButton("View inventory");
         addButton("Save data");
         addButton("Load data");
         getContentPane().setBackground(new Color(171,177,207));
@@ -54,7 +54,7 @@ public class MainMenu extends JFrame implements ActionListener {
             case "Add product":
                 openAddProductMenu(workSpace);
                 break;
-            case "View all products in inventory":
+            case "View inventory":
                 openInventoryMenu(workSpace);
                 break;
             case "Save data":

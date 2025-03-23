@@ -7,31 +7,42 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.*;
 
 public class InventoryMenu extends JFrame implements ActionListener {
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 700;
+    public static final String[] columnNames = {"Product's name", "Product's ID", "Product's unit price", "Product's selling price", "Product's quantity"};
 
     private WorkSpace workSpace;
+    private List<Product> products;
+    private JTextField search;
 
-    // EFFECTS: creates a new Inventory Menu with workspace
+    
+    // EFFECTS: creates a new Inventory Menu with a copy of inventory in workspace
+    @SuppressWarnings("methodlength")
     public InventoryMenu(WorkSpace workSpace) {
         super("Inventory");
         this.workSpace = workSpace;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setPreferredSize(new Dimension(MainMenu.WIDTH, MainMenu.HEIGHT));
         GridBagLayout layout = new GridBagLayout();
         setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
-        List<Product> products = workSpace.getInventory().getProducts();
+        List<Product> products = new ArrayList<Product>(workSpace.getInventory().getProducts());
+        search = new JTextField(100);
+        addSearchBar(search, gbc);
 
-        String[] columnNames = {"Product's name", "Product's ID", "Product's unit price", "Product's selling price", "Product's quantity"};
-        addSearchBar(gbc);
+        Panel buttonPanel = new Panel(new FlowLayout());
+        addButton("Search product by ID", buttonPanel);
+        addButton("Search product by name", buttonPanel);
+        gbc.gridy += 1;
+        add(buttonPanel, gbc);
         addTable(products, columnNames, gbc);
+        
         addButton("Return to Main Menu", gbc);
+        
         addSpacer(gbc, 3);
         setBackground(new Color(171,177,207));
         pack();
@@ -43,6 +54,12 @@ public class InventoryMenu extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
+            case "Search product by ID":
+                findProductWithId();
+                break;
+            case "Search product by name":
+                findProductWithName();
+                break;
             case "Return to Main Menu":
                 dispose();
                 new MainMenu(workSpace);
@@ -67,7 +84,12 @@ public class InventoryMenu extends JFrame implements ActionListener {
 
     // EFFECTS: instantiates a new button and add it to a panel
     private void addButton(String command, Panel buttonPanel) {
-        // stub
+        JButton btn = new JButton(command);
+        btn.setActionCommand(command);
+        btn.addActionListener(this);
+        btn.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btn.setBackground(new Color(222,194,203));
+        buttonPanel.add(btn);
     }
 
     // EFFECTS: add the table to content pane
@@ -113,15 +135,37 @@ public class InventoryMenu extends JFrame implements ActionListener {
     }
 
     // EFFECTS: add a text field that acts as a search bar at the top of the pane
-    private void addSearchBar(GridBagConstraints gbc) {
-        gbc.gridx = 0;
-        gbc.gridy +=1;
-        gbc.weightx = 1;
-        gbc.weighty = 0;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        TextField searchBar = new TextField(100);
-        searchBar.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        add(searchBar, gbc);
+    private void addSearchBar(JTextField search, GridBagConstraints gbc) {
+            gbc.gridx = 0;
+            gbc.gridy +=1;
+            gbc.weightx = 1;
+            gbc.weighty = 0;
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            search.setBackground(new Color(245, 245, 245));
+            search.setFont(new Font("Tahoma", Font.PLAIN, 15));
+            add(search, gbc);
+    }
+
+    // EFFECTS: 
+    private void findProductWithId() {
+        String id = search.getText().trim();
+        Product p = workSpace.getInventory().findProductWithId(id);
+        if (p != null) {
+            List<Product> products = new ArrayList<>();
+            products.add(p);
+            dispose();
+            new FilteredInventoryMenu(products, workSpace);
+        } else {
+            JOptionPane.showMessageDialog(this, "No product with given ID was found.");
+        }
+    }
+
+    // EFFECTS: 
+    private void findProductWithName() {
+        String name = search.getText().trim();
+        List<Product> p = workSpace.getInventory().findProductWithName(name);
+        dispose();
+        new FilteredInventoryMenu(p, workSpace);
     }
 }

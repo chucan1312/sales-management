@@ -7,9 +7,6 @@ import java.awt.event.*;
 import model.*;
 
 public class AddProductMenu extends JFrame implements ActionListener {
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 700;
-
     private WorkSpace workSpace;
     private JTextField nameField;
     private JTextField idField;
@@ -17,12 +14,13 @@ public class AddProductMenu extends JFrame implements ActionListener {
     private JTextField sellingPriceField;
     private JTextField quantityField;
 
+    // EFFECTS: creates a new Add Product Menu with workspace and text fields for inputting product informations
     @SuppressWarnings("methodlength")
     public AddProductMenu(WorkSpace workSpace) {
-        super("Add new product");
+        super("Add product");
         this.workSpace = workSpace;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setPreferredSize(new Dimension(MainMenu.WIDTH, MainMenu.HEIGHT));
         GridBagLayout layout = new GridBagLayout();
         setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -34,7 +32,7 @@ public class AddProductMenu extends JFrame implements ActionListener {
         quantityField = new JTextField(50);
 
         addTitle("ADD PRODUCT", gbc, layout);
-        addSpacer(gbc);
+        addSpacer(gbc, 4);
 
         addTextField(nameField, "Product's Name:", layout, gbc, 1, gbc.gridy, 1, 1);
         addTextField(idField, "Product's ID:", layout, gbc, 1, gbc.gridy += 1, 1, 1);
@@ -42,9 +40,9 @@ public class AddProductMenu extends JFrame implements ActionListener {
         addTextField(sellingPriceField, "Product's selling price:", layout, gbc, 1, gbc.gridy += 1, 1, 1);
         addTextField(quantityField, "Product's quantity:", layout, gbc, 1, gbc.gridy += 1, 1, 1);
 
-        addSpacer(gbc);
+        addSpacer(gbc, 4);
 
-        // Add all buttons to a single panel with the flow layout
+        // add all buttons to a single panel with the flow layout
         JPanel buttonPanel = new JPanel(new FlowLayout());
         addButton("Submit", buttonPanel);
         addButton("Return to Main Menu", buttonPanel);
@@ -76,7 +74,7 @@ public class AddProductMenu extends JFrame implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: add a product to workspace and exit the add product menu only if all
+    // EFFECTS: adds a product to workspace and exit the add product menu only if all
     // fields are filled
     private void addProduct() {
         String name = nameField.getText().trim();
@@ -137,13 +135,13 @@ public class AddProductMenu extends JFrame implements ActionListener {
         buttonPanel.add(btn);
     }
 
-    // EFFECTS: add 4 empty labels as a spacer
-    private void addSpacer(GridBagConstraints gbc) {
+    // EFFECTS: add n empty labels as a spacer
+    private void addSpacer(GridBagConstraints gbc, int n) {
         gbc.gridx = 0;
         gbc.gridy += 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        for (int i = 0; i <= 3; i++) {
+        for (int i = 0; i < n; i++) {
             add(new JLabel("  "), gbc);
             gbc.gridy += 1;
         }
