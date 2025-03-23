@@ -31,6 +31,7 @@ public class MainMenu extends JFrame implements ActionListener {
         // addButton("View all products in inventory");
         addButton("Save data");
         addButton("Load data");
+        getContentPane().setBackground(new Color(171,177,207));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -43,6 +44,7 @@ public class MainMenu extends JFrame implements ActionListener {
         btn.setActionCommand(command);
         btn.addActionListener(this);
         btn.setFont(new Font("Tahoma", Font.BOLD, 15));
+        btn.setBackground(new Color(222,194,203));
         add(btn);
     }
 
@@ -52,9 +54,9 @@ public class MainMenu extends JFrame implements ActionListener {
             case "Add product":
                 openAddProductMenu(workSpace);
                 break;
-            // case "View all products in inventory":
-            //     openInventoryMenu(workSpace);
-            //     break;
+            case "View all products in inventory":
+                openInventoryMenu(workSpace);
+                break;
             case "Save data":
                 save();
                 break;
@@ -70,10 +72,11 @@ public class MainMenu extends JFrame implements ActionListener {
         new AddProductMenu(workSpace);
     }
 
-    // // EFFECTS: passes workspace into a new InventoryMenu() instantiation 
-    // private void openInventoryMenu(WorkSpace workspace) {
-    //     // stub
-    // }
+    // EFFECTS: passes workspace into a new InventoryMenu() instantiation 
+    private void openInventoryMenu(WorkSpace workspace) {
+        dispose();
+        new InventoryMenu(workSpace);
+    }
 
     // EFFECTS: saves the workspace to file
     private void save() {
