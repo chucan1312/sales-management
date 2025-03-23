@@ -52,8 +52,8 @@ public class AddProductMenu extends JFrame implements ActionListener {
 
         addImage(gbc, layout);
 
-        buttonPanel.setBackground(new Color(171,177,207));
-        getContentPane().setBackground(new Color(171,177,207));
+        buttonPanel.setBackground(MainMenu.backgroundColor);
+        getContentPane().setBackground(MainMenu.backgroundColor);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -106,7 +106,7 @@ public class AddProductMenu extends JFrame implements ActionListener {
         gbc.gridheight = gridheight;
 
         layout.setConstraints(textField, gbc);
-        textField.setBackground(new Color(222,194,203));
+        textField.setBackground(MainMenu.buttonColor);
         add(textField);
         textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
     }
@@ -131,7 +131,7 @@ public class AddProductMenu extends JFrame implements ActionListener {
         btn.setActionCommand(command);
         btn.addActionListener(this);
         btn.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btn.setBackground(new Color(222,194,203));
+        btn.setBackground(MainMenu.buttonColor);
         buttonPanel.add(btn);
     }
 

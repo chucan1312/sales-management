@@ -44,7 +44,7 @@ public class InventoryMenu extends JFrame implements ActionListener {
         addButton("Return to Main Menu", gbc);
         
         addSpacer(gbc, 3);
-        setBackground(new Color(171,177,207));
+        setBackground(MainMenu.backgroundColor);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -73,7 +73,7 @@ public class InventoryMenu extends JFrame implements ActionListener {
         btn.setActionCommand(command);
         btn.addActionListener(this);
         btn.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btn.setBackground(new Color(222,194,203));
+        btn.setBackground(MainMenu.buttonColor);
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.gridx = 0;
@@ -88,7 +88,7 @@ public class InventoryMenu extends JFrame implements ActionListener {
         btn.setActionCommand(command);
         btn.addActionListener(this);
         btn.setFont(new Font("Tahoma", Font.BOLD, 15));
-        btn.setBackground(new Color(222,194,203));
+        btn.setBackground(MainMenu.buttonColor);
         buttonPanel.add(btn);
     }
 
@@ -103,7 +103,7 @@ public class InventoryMenu extends JFrame implements ActionListener {
         JTableHeader header = table.getTableHeader();
         header.setBackground(new Color (146,168,209));
         header.setFont(new Font("Tahoma", Font.BOLD, 15));;
-        table.setBackground(new Color(171,177,207));
+        table.setBackground(MainMenu.backgroundColor);
         table.setFont(new Font("Tahoma", Font.PLAIN, 15));
         gbc.gridx = 0;
         gbc.gridy += 1;
