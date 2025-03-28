@@ -60,11 +60,11 @@ class JsonWriterTest extends JsonTest {
 
             Purchase pc1 = new Purchase(24.0, "Cash");
             Purchase pc2 = new Purchase(7.0, "E-transfer");
-            pc1.setDate(2024,12,13);
+            pc1.setDate(2024,12,3);
             pc1.addProduct(p1, 1);
             pc1.addProduct(p2, 2);
             pc1.reviewPurchase();
-            pc2.setDate(2025,03,14);
+            pc2.setDate(2025,3,14);
 
             ws.getPurchaseRecord().addPurchase(pc1);
             ws.getPurchaseRecord().addPurchase(pc2);
@@ -84,7 +84,7 @@ class JsonWriterTest extends JsonTest {
             checkProduct("cupcake", "456", 3.0, 14.5, 12, products.get(1));
 
             assertEquals(2, purchases.size());
-            LocalDate date1 = LocalDate.of(2024, 12, 13);
+            LocalDate date1 = LocalDate.of(2024, 12, 3);
             LocalDate date2 = LocalDate.of(2025, 3, 14);
             Map<Product, Integer> purchased1 = new HashMap<>();
             purchased1.put(products.get(0), 1);
