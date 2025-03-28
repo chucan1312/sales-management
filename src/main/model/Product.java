@@ -16,12 +16,12 @@ public class Product implements Writable {
     private int quantity;
 
     // EFFECTS: constructs a new product with given name, id and original unit price, no selling price or quantity
-    public Product (String name, String id, Double unitPrice) {
+    public Product (String name, String id, Double unitPrice, Double sellingPrice, int quantity) {
         this.name = name;
         this.id = id;
-        sellingPrice = (double) 0;
+        this.sellingPrice = sellingPrice;
         this.unitPrice = unitPrice;
-        quantity = 0;
+        this.quantity = quantity;
     }
 
     // REQUIRES: amount > 0

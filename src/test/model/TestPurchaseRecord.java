@@ -23,8 +23,8 @@ public class TestPurchaseRecord {
         pc1 = new Purchase((double) 20, "Cash");
         pc2 = new Purchase(30.5, "E-transfer");
         pc3 = new Purchase(15.5, "Cash");
-        p1 = new Product("product 1", "123", 2.5);
-        p2 = new Product("product 2", "456", (double) 2);
+        p1 = new Product("product 1", "123", 2.5, 0.0, 0);
+        p2 = new Product("product 2", "456", (double) 2, 0.0, 0);
     }
 
     @Test

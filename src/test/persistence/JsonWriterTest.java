@@ -51,12 +51,8 @@ class JsonWriterTest extends JsonTest {
     @Test 
     void testWriterGeneral() {
         try {
-            Product p1 = new Product("cake", "123", 12.0);
-            Product p2 = new Product("cupcake", "456", 3.0);
-            p1.setSellingPrice(15.0);
-            p2.setSellingPrice(14.5);
-            p1.restock(11);
-            p2.restock(14);
+            Product p1 = new Product("cake", "123", 12.0, 15.0,11);
+            Product p2 = new Product("cupcake", "456", 3.0, 14.5, 14);
 
             WorkSpace ws = new WorkSpace(new Inventory(), new PurchaseRecord());
             ws.getInventory().addProduct(p1);

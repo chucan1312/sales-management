@@ -140,37 +140,16 @@ public class SalesManagement {
         System.out.println(" Please enter the product's unit price: ");
         String unitPrice = this.scanner.nextLine();
 
-        Product p = new Product(name, id, Double.valueOf(unitPrice));
+        System.out.println(" Please enter the product's selling price: ");
+        String sellingPrice = this.scanner.nextLine();
 
-        System.out.println(" Would you like to specify the selling price and quantity?");
-        System.out.println(" [y]: yes");
-        System.out.println(" [n]: no");
-        String input = this.scanner.nextLine();
-        processAddProductCommand(input, p);
-        
-        if (input.equals("y") || input.equals("n")) {
-            workSpace.getInventory().addProduct(p);
-            System.out.println(" Product successfully added to inventory!");
-        }
-    }
+        System.out.println(" Please enter the product's quantity: ");
+        String quantity = this.scanner.nextLine();
+                
+        Product p = new Product(name, id, Double.valueOf(unitPrice), Double.valueOf(sellingPrice), Integer.valueOf(quantity));
 
-    // EFFECTS: process the user's input on the Add Product menu
-    public void processAddProductCommand(String input, Product product) {
-        switch(input) {
-            case "y":
-                System.out.println(" Please enter the product's selling price: ");
-                String sellingPrice = this.scanner.nextLine();
-                product.setSellingPrice(Double.valueOf(sellingPrice));
-
-                System.out.println(" Please enter the product's quantity: ");
-                String quantity = this.scanner.nextLine();
-                product.restock(Integer.valueOf(quantity));
-                break;
-            case "n":
-                break;
-            default:
-                System.out.println(" ERROR: Invalid option inputted. Please try again. ");
-        }
+        workSpace.getInventory().addProduct(p);
+        System.out.println(" Product successfully added to inventory!");
     }
 
     // EFFECTS: display all products' information, one product at a time

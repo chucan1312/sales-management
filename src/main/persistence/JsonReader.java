@@ -75,9 +75,7 @@ public class JsonReader {
         Double unitPrice = jsonObject.getDouble("Unit price");
         Double sellingPrice = jsonObject.getDouble("Selling price");
         Integer quantity = jsonObject.getInt("Quantity");
-        Product p = new Product(name, id, unitPrice);
-        p.setSellingPrice(sellingPrice);
-        p.restock(quantity);
+        Product p = new Product(name, id, unitPrice, sellingPrice, quantity);
         i.addProduct(p);
     }
 

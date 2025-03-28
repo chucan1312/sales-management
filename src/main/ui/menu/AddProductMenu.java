@@ -85,9 +85,7 @@ public class AddProductMenu extends JFrame implements ActionListener {
 
         if (!name.isEmpty() && !id.isEmpty() && !unitPrice.isEmpty() && !sellingPrice.isEmpty()
                 && !quantity.isEmpty()) {
-            Product product = new Product(name, id, Double.valueOf(unitPrice));
-            product.setSellingPrice(Double.valueOf(sellingPrice));
-            product.restock(Integer.valueOf(quantity));
+            Product product = new Product(name, id, Double.valueOf(unitPrice), Double.valueOf(sellingPrice), Integer.valueOf(quantity));
             workSpace.getInventory().addProduct(product);
             JOptionPane.showMessageDialog(this, "Product added successfully!");
             dispose();

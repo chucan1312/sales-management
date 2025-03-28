@@ -10,7 +10,7 @@ public class TestProduct {
 
     @BeforeEach
     void runBefore() {
-        p = new Product("name", "123", (double) 10);
+        p = new Product("name", "123", (double) 10, 12.5, 3);
     }
 
     @Test
@@ -18,30 +18,30 @@ public class TestProduct {
         assertEquals("name", p.getName());
         assertEquals("123", p.getId());
         assertEquals(10, p.getUnitPrice());
-        assertEquals(0, p.getSellingPrice());
-        assertEquals(0, p.getQuantity());
+        assertEquals(12.5, p.getSellingPrice());
+        assertEquals(3, p.getQuantity());
     }
 
     @Test
     void testRestockOneProductOnce() {
         p.restock(10);
-        assertEquals(10, p.getQuantity());    
+        assertEquals(13, p.getQuantity());    
     }
 
     @Test
     void testRestockOneProductTwice() {
         p.restock(15);
         p.restock(10);
-        assertEquals(25, p.getQuantity());
+        assertEquals(28, p.getQuantity());
     }
 
     @Test
     void testRestockTwoProductsOnce() {
-        Product p2 = new Product("name1", "234", (double) 15);
+        Product p2 = new Product("name1", "234", (double) 15, 20.0, 0);
         p.restock(3);
         p2.restock(5);
 
-        assertEquals(3, p.getQuantity());
+        assertEquals(6, p.getQuantity());
         assertEquals(5, p2.getQuantity());
     }
 
@@ -49,26 +49,26 @@ public class TestProduct {
     void testSellOneProduct() {
         p.restock(10);
         p.sell(5);
-        assertEquals(5, p.getQuantity());
+        assertEquals(8, p.getQuantity());
     }
 
     @Test
     void testSellOneProductMax() {
         p.restock(10);
-        assertEquals(10, p.getQuantity());
+        assertEquals(13, p.getQuantity());
         p.sell(10);
-        assertEquals(0, p.getQuantity());
+        assertEquals(3, p.getQuantity());
     }
 
     @Test
     void testSellTwoProductOnce() {
-        Product p2 = new Product("name1", "234", (double) 15);
+        Product p2 = new Product("name1", "234", (double) 15, 25.5, 0);
         p2.restock(20);
         p.restock(10);
         p2.sell(10);
         p.sell(2);
 
-        assertEquals(8, p.getQuantity());
+        assertEquals(11, p.getQuantity());
         assertEquals(10, p2.getQuantity());
     }
 

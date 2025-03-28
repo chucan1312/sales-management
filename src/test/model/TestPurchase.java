@@ -13,8 +13,8 @@ public class TestPurchase {
     @BeforeEach
     void runBefore() {
         pc = new Purchase((double) 15, "Cash");
-        p1 = new Product("cake", "123", 15.1);
-        p2 = new Product("pie", "456", 13.2);
+        p1 = new Product("cake", "123", 15.1, 0.0, 0);
+        p2 = new Product("pie", "456", 13.2, 0.0, 0);
         p1.restock(10);
         p2.restock(5);
         p1.setSellingPrice(15.5);
@@ -109,7 +109,7 @@ public class TestPurchase {
 
     @Test
     void testDifferenceEqualTo() {
-        Product p3 = new Product("", "", 7.1);
+        Product p3 = new Product("", "", 7.1, 0.0, 0);
         p3.setSellingPrice(7.5);
         pc.addProduct(p3, 2);
         assertEquals(0, pc.difference());

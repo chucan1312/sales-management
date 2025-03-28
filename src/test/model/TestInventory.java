@@ -16,9 +16,9 @@ public class TestInventory {
     @BeforeEach
     void runBefore() {
         i = new Inventory();
-        p1 = new Product("Cupcake", "123", (double) 10);
-        p2 = new Product("Carrot Cake", "456", (double) 5);
-        p3 = new Product ("Apple Pie", "789", (double) 15);
+        p1 = new Product("Cupcake", "123", (double) 10, 20.0, 1);
+        p2 = new Product("Carrot Cake", "456", (double) 5, 10.0, 4);
+        p3 = new Product ("Apple Pie", "789", (double) 15, 17.5, 10);
     }
 
     @Test
