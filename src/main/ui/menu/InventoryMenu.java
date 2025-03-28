@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.*;
+import model.Event;
 
 public class InventoryMenu extends JFrame implements ActionListener {
     public static final String[] columnNames = {"Product's name", "Product's ID", "Product's unit price", "Product's selling price", "Product's quantity"};
@@ -168,4 +169,5 @@ public class InventoryMenu extends JFrame implements ActionListener {
         dispose();
         new FilteredInventoryMenu(p, workSpace);
     }
+    
 }

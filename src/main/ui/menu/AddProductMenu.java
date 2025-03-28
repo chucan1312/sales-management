@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 import model.*;
+import model.Event;
 
 public class AddProductMenu extends JFrame implements ActionListener {
     private WorkSpace workSpace;

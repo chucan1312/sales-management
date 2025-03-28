@@ -102,5 +102,4 @@ public class FilteredInventoryMenu extends JFrame implements ActionListener {
             model.addRow(row);
         }
     }
-
 }

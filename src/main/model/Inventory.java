@@ -26,6 +26,7 @@ public class Inventory {
                 return product;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Looked up product with ID " + id));
         return null;
     }
 
@@ -33,6 +34,7 @@ public class Inventory {
     // EFFECTS: add a product to the end of list of products if not already in list
     public void addProduct(Product product) {
         if (!products.contains(product)) {
+            EventLog.getInstance().logEvent(new Event("Added new product to Inventory"));
             products.add(product);
         }
     }
@@ -41,6 +43,7 @@ public class Inventory {
     // MODIFIES: this
     // EFFECTS: remove a product 
     public void removeProduct(Product p) {
+        EventLog.getInstance().logEvent(new Event("Removed a product from Inventory"));
         products.remove(p);
     }
 
@@ -54,7 +57,7 @@ public class Inventory {
                 list.add(product);
             }
         }
-
+        EventLog.getInstance().logEvent(new Event("Search for products by search term " + searchTerm));
         return list;
     }
 

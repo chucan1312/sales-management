@@ -8,9 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import model.*;
+import model.Event;
 import persistence.*;
 
-public class MainMenu extends JFrame implements ActionListener {
+public class MainMenu extends JFrame implements ActionListener, WindowListener {
     private static final String JSON_STORE = "./data/workspace";
     public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
@@ -27,6 +28,7 @@ public class MainMenu extends JFrame implements ActionListener {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.addWindowListener(this);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         GridBagLayout layout = new GridBagLayout();
         setLayout(layout);
@@ -137,5 +139,48 @@ public class MainMenu extends JFrame implements ActionListener {
         layout.setConstraints(title, gbc);
         title.setFont(new Font("Tahoma", Font.BOLD, 32));
         add(title);
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        // do nothing?
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        for (Event event : EventLog.getInstance()) {
+            System.out.println(event.getDate());
+            System.out.println(event.getDescription());
+            System.out.println();
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        for (Event event : EventLog.getInstance()) {
+            System.out.println(event.getDate());
+            System.out.println(event.getDescription());
+            System.out.println();
+        }
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // do nothing?
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // do nothing?
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        // do nothing?
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        // do nothing?
     }
 }
