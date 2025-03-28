@@ -12,12 +12,12 @@ import persistence.Writable;
 // Represent a store's inventory with a list of products
 public class Inventory {
     private List<Product> products;
-   
+
     // EFFECTS: construct an inventory with an empty product list
     public Inventory() {
         products = new ArrayList<Product>();
     }
-    
+
     // EFFECTS: return a product when given an id,
     // return null if not found
     public Product findProductWithId(String id) {
@@ -41,7 +41,7 @@ public class Inventory {
 
     // REQUIRES: findProductWithId(id) != null
     // MODIFIES: this
-    // EFFECTS: remove a product 
+    // EFFECTS: remove a product
     public void removeProduct(Product p) {
         EventLog.getInstance().logEvent(new Event("Removed a product from Inventory"));
         products.remove(p);
@@ -49,7 +49,8 @@ public class Inventory {
 
     // REQUIRES: searchTerm != ""
     // EFFECTS: return a list of products with names containing the search term,
-    // return empty list if no products' name contain the search term (case insensitive)
+    // return empty list if no products' name contain the search term (case
+    // insensitive)
     public List<Product> findProductWithName(String searchTerm) {
         List<Product> list = new ArrayList<Product>();
         for (Product product : products) {
@@ -80,5 +81,5 @@ public class Inventory {
 
         return jsonArray;
     }
-    
+
 }

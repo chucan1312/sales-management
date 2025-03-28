@@ -25,7 +25,7 @@ public class FilteredInventoryMenu extends JFrame implements ActionListener {
         GridBagLayout layout = new GridBagLayout();
         setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
-        
+
         addTable(products, InventoryMenu.columnNames, gbc);
         addButton("Return to Inventory", gbc);
         addSpacer(gbc, 3);
@@ -79,11 +79,12 @@ public class FilteredInventoryMenu extends JFrame implements ActionListener {
         JTable table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         parseInventory(products, model);
-        
+
         // customize header
         JTableHeader header = table.getTableHeader();
-        header.setBackground(new Color (146,168,209));
-        header.setFont(new Font("Tahoma", Font.BOLD, 15));;
+        header.setBackground(new Color(146, 168, 209));
+        header.setFont(new Font("Tahoma", Font.BOLD, 15));
+        ;
         table.setBackground(MainMenu.backgroundColor);
         table.setFont(new Font("Tahoma", Font.PLAIN, 15));
         gbc.gridx = 0;
@@ -94,11 +95,11 @@ public class FilteredInventoryMenu extends JFrame implements ActionListener {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         add(scrollPane, gbc);
     }
-    
+
     // EFFECTS: parses the data from Inventory into the correct form for JTable
     private void parseInventory(List<Product> products, DefaultTableModel model) {
-        for(Product p : products) {
-            Object[] row = {p.getName(), p.getId(), p.getUnitPrice(), p.getSellingPrice(), p.getQuantity()};
+        for (Product p : products) {
+            Object[] row = { p.getName(), p.getId(), p.getUnitPrice(), p.getSellingPrice(), p.getQuantity() };
             model.addRow(row);
         }
     }

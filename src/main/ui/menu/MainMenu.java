@@ -14,14 +14,14 @@ import persistence.*;
 public class MainMenu extends JFrame implements ActionListener, WindowListener {
     private static final String JSON_STORE = "./data/workspace";
     public static final int WIDTH = 1000;
-	public static final int HEIGHT = 700;
-    public static final Color backgroundColor = new Color(171,177,207);
-    public static final Color buttonColor = new Color(222,194,203);
+    public static final int HEIGHT = 700;
+    public static final Color backgroundColor = new Color(171, 177, 207);
+    public static final Color buttonColor = new Color(222, 194, 203);
 
     private WorkSpace workSpace;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-    
+
     public MainMenu(WorkSpace workSpace) {
         super("Sales Management App");
         this.workSpace = workSpace;
@@ -53,7 +53,7 @@ public class MainMenu extends JFrame implements ActionListener, WindowListener {
         gbc.gridx = 1;
         gbc.insets = new Insets(0, 0, -320, -270);
         addImage("./data/right.png", gbc, layout);
-        getContentPane().setBackground(new Color(171,177,207));
+        getContentPane().setBackground(new Color(171, 177, 207));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -95,13 +95,13 @@ public class MainMenu extends JFrame implements ActionListener, WindowListener {
         }
     }
 
-    // EFFECTS: passes workspace into a new AddProductMenu() instantiation 
+    // EFFECTS: passes workspace into a new AddProductMenu() instantiation
     private void openAddProductMenu(WorkSpace workSpace) {
         dispose();
         new AddProductMenu(workSpace);
     }
 
-    // EFFECTS: passes workspace into a new InventoryMenu() instantiation 
+    // EFFECTS: passes workspace into a new InventoryMenu() instantiation
     private void openInventoryMenu(WorkSpace workspace) {
         dispose();
         new InventoryMenu(workSpace);
@@ -123,16 +123,16 @@ public class MainMenu extends JFrame implements ActionListener, WindowListener {
     private void load() {
         try {
             workSpace = jsonReader.read();
-            JOptionPane.showMessageDialog(this,"Loaded workspace from " + JSON_STORE);
+            JOptionPane.showMessageDialog(this, "Loaded workspace from " + JSON_STORE);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this,"Unable to read from file: " + JSON_STORE);
+            JOptionPane.showMessageDialog(this, "Unable to read from file: " + JSON_STORE);
         }
     }
 
     private void addTitle(String s, GridBagConstraints gbc, GridBagLayout layout) {
         Label title = new Label(s);
         gbc.gridx = 0;
-        gbc.gridy += 1; 
+        gbc.gridy += 1;
         gbc.gridwidth = 2;
         gbc.gridheight = 1;
 
@@ -143,7 +143,6 @@ public class MainMenu extends JFrame implements ActionListener, WindowListener {
 
     @Override
     public void windowOpened(WindowEvent e) {
-        // do nothing?
     }
 
     @Override
@@ -157,30 +156,21 @@ public class MainMenu extends JFrame implements ActionListener, WindowListener {
 
     @Override
     public void windowClosed(WindowEvent e) {
-        for (Event event : EventLog.getInstance()) {
-            System.out.println(event.getDate());
-            System.out.println(event.getDescription());
-            System.out.println();
-        }
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
-        // do nothing?
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-        // do nothing?
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
-        // do nothing?
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-        // do nothing?
     }
 }

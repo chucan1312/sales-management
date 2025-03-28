@@ -21,11 +21,12 @@ public class Purchase implements Writable {
     private String paymentMethod;
     private Boolean reviewedStatus;
 
-    // EFFECTS: Construct a new purchase with the amount paid, no prudcts or total cost
-    // given payment method, and a false reviewed status 
+    // EFFECTS: Construct a new purchase with the amount paid, no prudcts or total
+    // cost
+    // given payment method, and a false reviewed status
     public Purchase(Double actualPaidAmount, String paymentMethod) {
         date = LocalDate.now();
-        purchasedProducts = new HashMap<Product,Integer>();
+        purchasedProducts = new HashMap<Product, Integer>();
         totalCost = (double) 0;
         this.actualPaidAmount = actualPaidAmount;
         this.paymentMethod = paymentMethod;
@@ -34,16 +35,17 @@ public class Purchase implements Writable {
 
     // REQUIRES: amount > 0, amount =< product.getQuantity()
     // MODIFIES: this, Product
-    // EFFECTS: Add product with bought amount in a purchase, add up price into totalCost,
-    // and change the quantity of product accordingly. If product is already in purchasedProducts;
-    // addProduct replace the original amount with the new one 
+    // EFFECTS: Add product with bought amount in a purchase, add up price into
+    // totalCost,
+    // and change the quantity of product accordingly. If product is already in
+    // purchasedProducts;
+    // addProduct replace the original amount with the new one
     public void addProduct(Product product, Integer amount) {
         if (!purchasedProducts.containsKey(product)) {
             purchasedProducts.put(product, amount);
             totalCost += product.getSellingPrice() * amount;
             product.sell(amount);
-        }
-        else {
+        } else {
             Integer originalAmount = purchasedProducts.get(product);
             purchasedProducts.put(product, amount);
             totalCost -= product.getSellingPrice() * originalAmount;
@@ -51,8 +53,7 @@ public class Purchase implements Writable {
             Integer mistake = amount - originalAmount;
             if (mistake > 0) {
                 product.sell(amount - originalAmount);
-            }
-            else {
+            } else {
                 product.restock(originalAmount - amount);
             }
         }
@@ -120,7 +121,7 @@ public class Purchase implements Writable {
         for (Map.Entry<Product, Integer> entry : purchasedProducts.entrySet()) {
             JSONObject pp = new JSONObject();
             pp.put("Product's ID", entry.getKey().getId());
-            pp.put("Quantity", entry.getValue()); 
+            pp.put("Quantity", entry.getValue());
             pps.put(pp);
         }
         json.put("Purchased Products", pps);
@@ -129,5 +130,5 @@ public class Purchase implements Writable {
         json.put("Reviewed Status", reviewedStatus);
         return json;
     }
-    
+
 }

@@ -1,6 +1,5 @@
 package model;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
@@ -15,7 +14,7 @@ import java.util.List;
 // Represents a record of all purchases made
 public class PurchaseRecord {
     private List<Purchase> purchases;
-   
+
     // EFFECTS: construct a record with an empty list of purchases
     public PurchaseRecord() {
         purchases = new ArrayList<Purchase>();
@@ -38,7 +37,8 @@ public class PurchaseRecord {
         return result;
     }
 
-    // EFFECTS: return a list of all unreviewed purchases for one day with given payment method (case sensitive)
+    // EFFECTS: return a list of all unreviewed purchases for one day with given
+    // payment method (case sensitive)
     public List<Purchase> getOneDayPurchasesMethod(LocalDate date, String method) {
         List<Purchase> result = new ArrayList<Purchase>();
         for (Purchase p : purchases) {
@@ -50,7 +50,7 @@ public class PurchaseRecord {
         return result;
     }
 
-    // EFFECTS: return the profit from start date to end date 
+    // EFFECTS: return the profit from start date to end date
     public Double getProfit(LocalDate start, LocalDate end) {
         Double expenses = (double) 0;
         Double revenue = (double) 0;
@@ -74,7 +74,7 @@ public class PurchaseRecord {
     }
 
     public List<Purchase> getPurchases() {
-        return purchases; 
+        return purchases;
     }
 
     public JSONArray purchasesToJson() {

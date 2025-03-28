@@ -14,13 +14,13 @@ import model.*;
 import model.Event;
 
 public class InventoryMenu extends JFrame implements ActionListener {
-    public static final String[] columnNames = {"Product's name", "Product's ID", "Product's unit price", "Product's selling price", "Product's quantity"};
+    public static final String[] columnNames = { "Product's name", "Product's ID", "Product's unit price",
+            "Product's selling price", "Product's quantity" };
 
     private WorkSpace workSpace;
     private List<Product> products;
     private JTextField search;
 
-    
     // EFFECTS: creates a new Inventory Menu with a copy of inventory in workspace
     @SuppressWarnings("methodlength")
     public InventoryMenu(WorkSpace workSpace) {
@@ -41,9 +41,9 @@ public class InventoryMenu extends JFrame implements ActionListener {
         gbc.gridy += 1;
         add(buttonPanel, gbc);
         addTable(products, columnNames, gbc);
-        
+
         addButton("Return to Main Menu", gbc);
-        
+
         addSpacer(gbc, 3);
         setBackground(MainMenu.backgroundColor);
         pack();
@@ -99,11 +99,12 @@ public class InventoryMenu extends JFrame implements ActionListener {
         JTable table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         parseInventory(workSpace.getInventory(), model);
-        
+
         // customize header
         JTableHeader header = table.getTableHeader();
-        header.setBackground(new Color (146,168,209));
-        header.setFont(new Font("Tahoma", Font.BOLD, 15));;
+        header.setBackground(new Color(146, 168, 209));
+        header.setFont(new Font("Tahoma", Font.BOLD, 15));
+        ;
         table.setBackground(MainMenu.backgroundColor);
         table.setFont(new Font("Tahoma", Font.PLAIN, 15));
         gbc.gridx = 0;
@@ -117,8 +118,8 @@ public class InventoryMenu extends JFrame implements ActionListener {
 
     // EFFECTS: parses the data from Inventory into the correct form for JTable
     private void parseInventory(Inventory i, DefaultTableModel model) {
-        for(Product p : i.getProducts()) {
-            Object[] row = {p.getName(), p.getId(), p.getUnitPrice(), p.getSellingPrice(), p.getQuantity()};
+        for (Product p : i.getProducts()) {
+            Object[] row = { p.getName(), p.getId(), p.getUnitPrice(), p.getSellingPrice(), p.getQuantity() };
             model.addRow(row);
         }
     }
@@ -137,18 +138,18 @@ public class InventoryMenu extends JFrame implements ActionListener {
 
     // EFFECTS: add a text field that acts as a search bar at the top of the pane
     private void addSearchBar(JTextField search, GridBagConstraints gbc) {
-            gbc.gridx = 0;
-            gbc.gridy +=1;
-            gbc.weightx = 1;
-            gbc.weighty = 0;
-            gbc.fill = GridBagConstraints.BOTH;
-            gbc.gridwidth = GridBagConstraints.REMAINDER;
-            search.setBackground(new Color(245, 245, 245));
-            search.setFont(new Font("Tahoma", Font.PLAIN, 15));
-            add(search, gbc);
+        gbc.gridx = 0;
+        gbc.gridy += 1;
+        gbc.weightx = 1;
+        gbc.weighty = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        search.setBackground(new Color(245, 245, 245));
+        search.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        add(search, gbc);
     }
 
-    // EFFECTS: 
+    // EFFECTS:
     private void findProductWithId() {
         String id = search.getText().trim();
         Product p = workSpace.getInventory().findProductWithId(id);
@@ -162,12 +163,12 @@ public class InventoryMenu extends JFrame implements ActionListener {
         }
     }
 
-    // EFFECTS: 
+    // EFFECTS:
     private void findProductWithName() {
         String name = search.getText().trim();
         List<Product> p = workSpace.getInventory().findProductWithName(name);
         dispose();
         new FilteredInventoryMenu(p, workSpace);
     }
-    
+
 }

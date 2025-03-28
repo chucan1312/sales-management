@@ -28,7 +28,7 @@ public class SalesManagement {
 
         System.out.println("Welcome to the Sales Management app!");
 
-        while(this.isProgramRunning) {
+        while (this.isProgramRunning) {
             handleMenu();
         }
     }
@@ -66,7 +66,7 @@ public class SalesManagement {
         System.out.println("║ [v]: view unreviewed purchases by day (financial reconciliation)   ║");
         System.out.println("║ [s]: save data to file                                             ║");
         System.out.println("║ [l]: load data from file                                           ║");
-        // System.out.println("║ [d]: update a purchase in purchase record                          ║");
+        // System.out.println("║ [d]: update a purchase in purchase record ║");
         System.out.println("║ [f]: get profit from date range                                    ║");
         System.out.println("║ [q]: exit the application                                          ║");
         printBottom();
@@ -81,7 +81,7 @@ public class SalesManagement {
             case "o":
                 getProducts();
                 break;
-            case "i": 
+            case "i":
                 findProductWithId();
                 break;
             case "n":
@@ -100,8 +100,8 @@ public class SalesManagement {
                 getOneDayPurchasesMethod();
                 break;
             // case "d":
-            //     updatePurchase();
-            //     break;
+            // updatePurchase();
+            // break;
             case "f":
                 getProfit();
                 break;
@@ -124,10 +124,10 @@ public class SalesManagement {
         printTop();
         printTitle("add product");
         printBottom();
-        
+
         System.out.println("Please enter the product's name: ");
         String name = this.scanner.nextLine();
-        
+
         System.out.println("Please enter the product's ID: ");
         String id = this.scanner.nextLine();
         for (Product p : workSpace.getInventory().getProducts()) {
@@ -145,8 +145,9 @@ public class SalesManagement {
 
         System.out.println(" Please enter the product's quantity: ");
         String quantity = this.scanner.nextLine();
-                
-        Product p = new Product(name, id, Double.valueOf(unitPrice), Double.valueOf(sellingPrice), Integer.valueOf(quantity));
+
+        Product p = new Product(name, id, Double.valueOf(unitPrice), Double.valueOf(sellingPrice),
+                Integer.valueOf(quantity));
 
         workSpace.getInventory().addProduct(p);
         System.out.println(" Product successfully added to inventory!");
@@ -159,8 +160,7 @@ public class SalesManagement {
         if (result.isEmpty()) {
             System.out.println(" ERROR: No product was found. Please try again.");
             return;
-        }
-        else {
+        } else {
             String command = "";
             while (!command.equals("q")) {
                 printTop();
@@ -170,7 +170,8 @@ public class SalesManagement {
                 System.out.println("║ [p]: move to the previous product                                  ║");
                 System.out.println("║ [q]: return to the main menu                                       ║");
                 printDivider();
-                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s):";
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of "
+                        + Integer.toString(result.size()) + " result(s):";
                 System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
                 Product currentProduct = result.get(currentIndex);
                 displayOneProduct(currentProduct);
@@ -179,41 +180,39 @@ public class SalesManagement {
             }
             currentIndex = 0;
         }
-    } 
+    }
 
     // EFFECTS: display the product's information given their id
     public void findProductWithId() {
         printTop();
         printTitle("find product by id");
         printBottom();
-        
+
         System.out.println(" Please enter the product's ID: ");
         String typedId = this.scanner.nextLine();
         Product p = workSpace.getInventory().findProductWithId(typedId);
         if (p == null) {
             System.out.println(" ERROR: No product was found. Please try again.");
-        }
-        else {
+        } else {
             printTop();
             displayOneProduct(p);
-        }   
+        }
     }
 
-    // EFFECTS: display the products' information given a search term, one product at a time
+    // EFFECTS: display the products' information given a search term, one product
+    // at a time
     public void findProductWithName() {
         printTop();
         printTitle("find product by name");
         printBottom();
 
-        
         System.out.println(" Please enter the search term: ");
         String searchTerm = this.scanner.nextLine();
         List<Product> result = workSpace.getInventory().findProductWithName(searchTerm);
         if (result.isEmpty()) {
             System.out.println(" ERROR: No product was found. Please try again.");
             return;
-        }
-        else {
+        } else {
             String command = "";
             while (!command.equals("q")) {
                 printTop();
@@ -223,7 +222,8 @@ public class SalesManagement {
                 System.out.println("║ [p]: move to the previous product                                  ║");
                 System.out.println("║ [q]: return to the main menu                                       ║");
                 printDivider();
-                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s):";
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of "
+                        + Integer.toString(result.size()) + " result(s):";
                 System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
                 Product currentProduct = result.get(currentIndex);
                 displayOneProduct(currentProduct);
@@ -233,30 +233,29 @@ public class SalesManagement {
             currentIndex = 0;
         }
     }
-    
+
     // MODIFIES: this
-    // EFFECTS: process the user's input by modifying the current index or exit the menu
+    // EFFECTS: process the user's input by modifying the current index or exit the
+    // menu
     public void processTraverseProductsList(String command, List<Product> products) {
         switch (command) {
             case "n":
                 if (currentIndex >= products.size() - 1) {
                     System.out.println(" ERROR: No more new product to display.");
-                }
-                else {
+                } else {
                     currentIndex++;
                 }
                 break;
             case "p":
                 if (currentIndex <= 0) {
                     System.out.println(" ERROR: No more previous product to display.");
-                }
-                else {
+                } else {
                     currentIndex--;
                 }
                 break;
             case "q":
                 return;
-            default: 
+            default:
                 System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
@@ -271,8 +270,10 @@ public class SalesManagement {
 
         System.out.println("║ Product's name: " + name + " ".repeat(BOX_LENGTH - 17 - name.length()) + "║");
         System.out.println("║ Product's ID: " + id + " ".repeat(BOX_LENGTH - 15 - id.length()) + "║");
-        System.out.println("║ Product's selling price: " + sellingPrice + " ".repeat(BOX_LENGTH - 26 - sellingPrice.length()) + "║");
-        System.out.println("║ Product's unit price: " + unitPrice + " ".repeat(BOX_LENGTH - 23 - unitPrice.length()) + "║");
+        System.out.println("║ Product's selling price: " + sellingPrice
+                + " ".repeat(BOX_LENGTH - 26 - sellingPrice.length()) + "║");
+        System.out.println(
+                "║ Product's unit price: " + unitPrice + " ".repeat(BOX_LENGTH - 23 - unitPrice.length()) + "║");
         System.out.println("║ Product's quantity: " + quantity + " ".repeat(BOX_LENGTH - 21 - quantity.length()) + "║");
         printBottom();
     }
@@ -282,20 +283,18 @@ public class SalesManagement {
         printTop();
         printTitle("update product's information");
         printBottom();
-        
+
         System.out.println(" Please enter the product's ID: ");
         String typedId = this.scanner.nextLine();
         Product p = workSpace.getInventory().findProductWithId(typedId);
         if (p == null) {
             System.out.println(" Error: No product was found. Please try again.");
-        }
-        else {
+        } else {
             String command = "";
             while (!command.equals("q")) {
                 if (!workSpace.getInventory().getProducts().contains(p)) {
                     return;
-                }
-                else {
+                } else {
                     printTop();
                     printTitle("update product's information");
                     printDivider();
@@ -310,12 +309,12 @@ public class SalesManagement {
                     processUpdateListCommand(command, p);
                 }
             }
-        } 
+        }
     }
 
     // EFFECTS: process user's input in the update product's information menu
     public void processUpdateListCommand(String input, Product p) {
-        switch(input) {
+        switch (input) {
             case "n":
                 System.out.println("Please enter new name: ");
                 String name = this.scanner.nextLine();
@@ -351,8 +350,8 @@ public class SalesManagement {
                         System.out.println("Product successfully removed.");
                         return;
                     case "n":
-                        break; 
-                    default: 
+                        break;
+                    default:
                         System.out.println(" ERROR: Invalid option inputted. Please try again.");
                 }
             case "q":
@@ -370,12 +369,12 @@ public class SalesManagement {
 
         System.out.println("Please enter the payment received: ");
         Double actualPaidAmount = Double.valueOf(this.scanner.nextLine());
-            
+
         System.out.println("Please enter the payment method: ");
         String paymentMethod = this.scanner.nextLine();
 
         Purchase p = new Purchase(actualPaidAmount, paymentMethod);
-        
+
         String input = "";
         while (!input.equals("n")) {
             System.out.println(" Would you like to record the products sold?");
@@ -383,7 +382,7 @@ public class SalesManagement {
             System.out.println(" [n]: no");
             input = this.scanner.nextLine();
             processAddPurchaseCommand(input, p);
-        
+
         }
         workSpace.getPurchaseRecord().addPurchase(p);
         System.out.println(" Purchase successfully recorded!");
@@ -396,12 +395,11 @@ public class SalesManagement {
                 System.out.println("Please enter the product's ID: ");
                 String id = this.scanner.nextLine();
                 Product product = workSpace.getInventory().findProductWithId(id);
-                
+
                 if (product == null) {
                     System.out.println(" ERROR: No product was found. Please try again.");
 
-                }
-                else {
+                } else {
                     System.out.println("Please enter the product's amount: ");
                     Integer amount = 999999999;
                     while (amount > product.getQuantity()) {
@@ -411,7 +409,8 @@ public class SalesManagement {
                         }
                     }
                     p.addProduct(product, amount);
-                    System.out.println("Product " + product.getName() + " (ID: " + product.getId() + ")" + " successfully recorded");
+                    System.out.println("Product " + product.getName() + " (ID: " + product.getId() + ")"
+                            + " successfully recorded");
                 }
                 break;
             case "n":
@@ -420,9 +419,10 @@ public class SalesManagement {
                 System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
-    
+
     // MODIFIES: this
-    // EFFECTS: display the purchases in purchaseRecord in between given dates, one purchase at a time
+    // EFFECTS: display the purchases in purchaseRecord in between given dates, one
+    // purchase at a time
     public void getPurchasesBetween() {
         printTop();
         printTitle("find purchase between");
@@ -453,9 +453,9 @@ public class SalesManagement {
 
         List<Purchase> result = workSpace.getPurchaseRecord().getPurchasesBetween(startDate, endDate);
         if (result.isEmpty()) {
-            System.out.println(" There's no purchase recorded from " + startDate.toString() + " to " + endDate.toString() + ".");
-        }
-        else {
+            System.out.println(
+                    " There's no purchase recorded from " + startDate.toString() + " to " + endDate.toString() + ".");
+        } else {
             String command = "";
             while (!command.equals("q")) {
                 printTop();
@@ -467,7 +467,8 @@ public class SalesManagement {
                 System.out.println("║ [u]: mark purchase as not reviewed                                 ║");
                 System.out.println("║ [q]: return to the main menu                                       ║");
                 printDivider();
-                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s)";
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of "
+                        + Integer.toString(result.size()) + " result(s)";
                 System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
                 Purchase currentPurchase = result.get(currentIndex);
                 displayOnePurchase(currentPurchase);
@@ -479,22 +480,21 @@ public class SalesManagement {
     }
 
     // MODIFIES: this
-    // EFFECTS: process the user's input after purchases have been searched in find purchase menus
+    // EFFECTS: process the user's input after purchases have been searched in find
+    // purchase menus
     public void processTraversePurchasesList(String command, List<Purchase> purchases) {
         switch (command) {
             case "n":
                 if (currentIndex >= purchases.size() - 1) {
                     System.out.println(" ERROR: No more new purchase to display.");
-                }
-                else {
+                } else {
                     currentIndex++;
                 }
                 break;
             case "p":
                 if (currentIndex <= 0) {
                     System.out.println(" ERROR: No more previous purchase to display.");
-                }
-                else {
+                } else {
                     currentIndex--;
                 }
                 break;
@@ -508,15 +508,16 @@ public class SalesManagement {
                 break;
             case "q":
                 return;
-            default: 
+            default:
                 System.out.println(" ERROR: Invalid option inputted. Please try again.");
         }
     }
 
     // MODFIFES: this
-    // EFFECTS: display all unreviewed purchases with specified method of payment in one day, one purchase at a time
+    // EFFECTS: display all unreviewed purchases with specified method of payment in
+    // one day, one purchase at a time
     public void getOneDayPurchasesMethod() {
-        printTop();        
+        printTop();
         printTitle("financial reconciliation");
         printBottom();
 
@@ -532,9 +533,9 @@ public class SalesManagement {
 
         List<Purchase> result = workSpace.getPurchaseRecord().getOneDayPurchasesMethod(date, paymentMethod);
         if (result.isEmpty()) {
-            System.out.println(" There's no unreviewed purchase on " + date.toString() + " using " + paymentMethod + ".");
-        }
-        else {
+            System.out
+                    .println(" There's no unreviewed purchase on " + date.toString() + " using " + paymentMethod + ".");
+        } else {
             String command = "";
             while (!command.equals("q")) {
                 printTop();
@@ -547,66 +548,70 @@ public class SalesManagement {
                 System.out.println("║ [q]: return to the main menu                                       ║");
                 printDivider();
                 Purchase currentPurchase = result.get(currentIndex);
-                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of " + Integer.toString(result.size()) + " result(s)";
+                String displayResult = " Showing result #" + Integer.toString((currentIndex + 1)) + " out of "
+                        + Integer.toString(result.size()) + " result(s)";
                 System.out.println("║" + displayResult + " ".repeat(BOX_LENGTH - displayResult.length()) + "║");
                 displayOnePurchase(currentPurchase);
                 command = this.scanner.nextLine();
                 processTraversePurchasesList(command, result);
-            }                
+            }
             currentIndex = 0;
         }
     }
 
     // // MODIFIES: this
-    // // EFFECTS: 
+    // // EFFECTS:
     // public void updatePurchase() {
-    //     printTop();
-    //     printTitle("update purchase's information");
-    //     printDivider();
-    //     List<Purchase> result = purchaseRecord.getPurchases();
-    //     if (result.isEmpty()) {
-    //         System.out.println(" Error: No purchase was found. Please try again.");
-    //     }
-    //     else {
-    //         String command = "";
-    //         while (!command.equals("q")) {
-    //             printTop();
-    //             printTitle("update purchase's information");
-    //             printDivider();
-    //             System.out.println("║ [p]: update purchase's sold products                               ║");
-    //             System.out.println("║ [r]: update purchase's received payment                            ║");
-    //             System.out.println("║ [m]: update purchase's payment method                              ║");
-    //             System.out.println("║ [t]: update purchase's quantity                                    ║");
-    //             System.out.println("║ [r]: remove purchase from purchase record                          ║");
-    //             System.out.println("║ [q]: return to the main menu                                       ║");
-    //             printBottom();
-    //             command = this.scanner.nextLine();
-    //             processUpdatePurchaseCommands(command, result);
-    //         }
-    //     } 
+    // printTop();
+    // printTitle("update purchase's information");
+    // printDivider();
+    // List<Purchase> result = purchaseRecord.getPurchases();
+    // if (result.isEmpty()) {
+    // System.out.println(" Error: No purchase was found. Please try again.");
+    // }
+    // else {
+    // String command = "";
+    // while (!command.equals("q")) {
+    // printTop();
+    // printTitle("update purchase's information");
+    // printDivider();
+    // System.out.println("║ [p]: update purchase's sold products ║");
+    // System.out.println("║ [r]: update purchase's received payment ║");
+    // System.out.println("║ [m]: update purchase's payment method ║");
+    // System.out.println("║ [t]: update purchase's quantity ║");
+    // System.out.println("║ [r]: remove purchase from purchase record ║");
+    // System.out.println("║ [q]: return to the main menu ║");
+    // printBottom();
+    // command = this.scanner.nextLine();
+    // processUpdatePurchaseCommands(command, result);
+    // }
+    // }
     // }
 
     // EFFECTS: display one purchase's information
     public void displayOnePurchase(Purchase p) {
         String date = p.getDate().toString();
-        Map<Product,Integer> products = p.getPurchasedProducts();
+        Map<Product, Integer> products = p.getPurchasedProducts();
         String totalCost = p.getTotalCost().toString();
         String actualPaidAmount = p.getActualPaidAmount().toString();
         String paymentMethod = p.getPaymentMethod();
         String reviewedStatus = Boolean.toString(p.getReviewedStatus());
-    
+
         System.out.println("║ Purchase's date: " + date + " ".repeat(BOX_LENGTH - 18 - date.length()) + "║");
         System.out.println("║ Purchase's products                                                ║");
-        for (Map.Entry<Product,Integer> entry : products.entrySet()) {
+        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             Product product = entry.getKey();
             Integer amount = entry.getValue();
             String display = (product.getName() + " (ID: " + product.getId() + "): " + amount + " item(s)");
             System.out.println("║    - " + display + " ".repeat(BOX_LENGTH - 6 - display.length()) + "║");
         }
         System.out.println("║ Purchase's total: " + totalCost + " ".repeat(BOX_LENGTH - 19 - totalCost.length()) + "║");
-        System.out.println("║ Purchase's received payment: " + actualPaidAmount + " ".repeat(BOX_LENGTH - 30 - actualPaidAmount.length()) + "║");
-        System.out.println("║ Purchase's payment method: " + paymentMethod + " ".repeat(BOX_LENGTH - 28 - paymentMethod.length()) + "║");
-        System.out.println("║ Product's reviewed status: " + reviewedStatus + " ".repeat(BOX_LENGTH - 28 - reviewedStatus.length()) + "║");
+        System.out.println("║ Purchase's received payment: " + actualPaidAmount
+                + " ".repeat(BOX_LENGTH - 30 - actualPaidAmount.length()) + "║");
+        System.out.println("║ Purchase's payment method: " + paymentMethod
+                + " ".repeat(BOX_LENGTH - 28 - paymentMethod.length()) + "║");
+        System.out.println("║ Product's reviewed status: " + reviewedStatus
+                + " ".repeat(BOX_LENGTH - 28 - reviewedStatus.length()) + "║");
         printBottom();
     }
 
@@ -640,7 +645,7 @@ public class SalesManagement {
         }
 
         Double profit = workSpace.getPurchaseRecord().getProfit(startDate, endDate);
-        System.out.println("Profit made from " + startDate.toString() + " to " + endDate.toString() + ": " + profit); 
+        System.out.println("Profit made from " + startDate.toString() + " to " + endDate.toString() + ": " + profit);
     }
 
     // EFFECTS: saves the workspace to file
@@ -682,7 +687,7 @@ public class SalesManagement {
     private void printDivider() {
         System.out.println("╠════════════════════════════════════════════════════════════════════╣");
     }
-    
+
     // EFFECTS: prints out the bottom line of the box
     private void printBottom() {
         System.out.println("╚════════════════════════════════════════════════════════════════════╝");
@@ -692,10 +697,11 @@ public class SalesManagement {
     private void printTitle(String title) {
         int length = title.length();
         if ((length % 2) == 1) {
-            System.out.println("║" + " ".repeat(BOX_LENGTH/2 - (length + 1)/2) + title.toUpperCase() + " ".repeat(BOX_LENGTH/2 - (length - 1)/2) + "║");
-        }
-        else {
-            System.out.println("║" + " ".repeat(BOX_LENGTH/2 - length/2) + title.toUpperCase() + " ".repeat(BOX_LENGTH/2 - length/2) + "║");
+            System.out.println("║" + " ".repeat(BOX_LENGTH / 2 - (length + 1) / 2) + title.toUpperCase()
+                    + " ".repeat(BOX_LENGTH / 2 - (length - 1) / 2) + "║");
+        } else {
+            System.out.println("║" + " ".repeat(BOX_LENGTH / 2 - length / 2) + title.toUpperCase()
+                    + " ".repeat(BOX_LENGTH / 2 - length / 2) + "║");
         }
     }
 }

@@ -87,7 +87,7 @@ public class JsonReader {
     }
 
     // MODIFIES: pr
-    // EFFECTS: parses purchases from JSON object and adds them to inventory 
+    // EFFECTS: parses purchases from JSON object and adds them to inventory
     private void addPurchases(PurchaseRecord pr, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("Purchase Record");
         for (Object json : jsonArray) {
@@ -97,10 +97,10 @@ public class JsonReader {
     }
 
     // MODIFIES: pr
-    // EFFECTS: parses purchase and adds it to inventory 
+    // EFFECTS: parses purchase and adds it to inventory
     private void addPurchase(PurchaseRecord pr, JSONObject jsonObject, JSONObject workspace) {
         String dateString = jsonObject.getString("Date");
-        int year = Integer.parseInt(dateString.substring(0,4));
+        int year = Integer.parseInt(dateString.substring(0, 4));
         int month = Integer.parseInt(dateString.substring(5, 7));
         int day = Integer.parseInt(dateString.substring(8));
 
@@ -118,13 +118,12 @@ public class JsonReader {
         for (String one : all) {
             Integer amount = map.get(one);
             Inventory i = this.parseInventory(workspace);
-            Product product = i.findProductWithId(one);        
+            Product product = i.findProductWithId(one);
             p.addProduct(product, amount);
         }
         pr.addPurchase(p);
     }
 
-        
     private Map<String, Integer> parsePurchasedProducts(JSONObject jsonObject) {
         Map<String, Integer> map = new HashMap();
         JSONArray jsonArray = jsonObject.getJSONArray("Purchased Products");

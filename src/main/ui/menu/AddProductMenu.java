@@ -15,7 +15,8 @@ public class AddProductMenu extends JFrame implements ActionListener {
     private JTextField sellingPriceField;
     private JTextField quantityField;
 
-    // EFFECTS: creates a new Add Product Menu with workspace and text fields for inputting product informations
+    // EFFECTS: creates a new Add Product Menu with workspace and text fields for
+    // inputting product informations
     @SuppressWarnings("methodlength")
     public AddProductMenu(WorkSpace workSpace) {
         super("Add product");
@@ -47,7 +48,7 @@ public class AddProductMenu extends JFrame implements ActionListener {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         addButton("Submit", buttonPanel);
         addButton("Return to Main Menu", buttonPanel);
-        gbc.gridy += 1; 
+        gbc.gridy += 1;
         gbc.gridwidth = 2;
         add(buttonPanel, gbc);
 
@@ -75,7 +76,8 @@ public class AddProductMenu extends JFrame implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a product to workspace and exit the add product menu only if all
+    // EFFECTS: adds a product to workspace and exit the add product menu only if
+    // all
     // fields are filled
     private void addProduct() {
         String name = nameField.getText().trim();
@@ -86,7 +88,8 @@ public class AddProductMenu extends JFrame implements ActionListener {
 
         if (!name.isEmpty() && !id.isEmpty() && !unitPrice.isEmpty() && !sellingPrice.isEmpty()
                 && !quantity.isEmpty()) {
-            Product product = new Product(name, id, Double.valueOf(unitPrice), Double.valueOf(sellingPrice), Integer.valueOf(quantity));
+            Product product = new Product(name, id, Double.valueOf(unitPrice), Double.valueOf(sellingPrice),
+                    Integer.valueOf(quantity));
             workSpace.getInventory().addProduct(product);
             JOptionPane.showMessageDialog(this, "Product added successfully!");
             dispose();
@@ -97,7 +100,8 @@ public class AddProductMenu extends JFrame implements ActionListener {
     }
 
     // EFFECTS: add a new label and a text field to the content pane
-    private void addTextField(JTextField textField, String label, GridBagLayout layout, GridBagConstraints gbc, int gridx, int gridy, int gridwidth, int gridheight) {
+    private void addTextField(JTextField textField, String label, GridBagLayout layout, GridBagConstraints gbc,
+            int gridx, int gridy, int gridwidth, int gridheight) {
         addLabel(label, layout, gbc, gridx, gridy, gridwidth, gridheight);
         gbc.gridx = gridx;
         gbc.gridy = gridy;
@@ -112,7 +116,8 @@ public class AddProductMenu extends JFrame implements ActionListener {
 
     // EFFECTS: add a label to the content pane at gridx - 1, gridy with gridwith
     // and gridheight
-    private void addLabel(String string, GridBagLayout layout, GridBagConstraints gbc, int gridx, int gridy, int gridwidth, int gridheight) {
+    private void addLabel(String string, GridBagLayout layout, GridBagConstraints gbc, int gridx, int gridy,
+            int gridwidth, int gridheight) {
         Label label = new Label(string);
         gbc.gridx = gridx - 1;
         gbc.gridy = gridy;
@@ -149,7 +154,7 @@ public class AddProductMenu extends JFrame implements ActionListener {
     private void addTitle(String s, GridBagConstraints gbc, GridBagLayout layout) {
         Label title = new Label(s);
         gbc.gridx = 0;
-        gbc.gridy = 0; 
+        gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.gridheight = 1;
 

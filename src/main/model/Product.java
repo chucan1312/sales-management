@@ -11,12 +11,13 @@ import persistence.Writable;
 public class Product implements Writable {
     private String name;
     private String id;
-    private Double sellingPrice; 
+    private Double sellingPrice;
     private Double unitPrice;
     private int quantity;
 
-    // EFFECTS: constructs a new product with given name, id and original unit price, no selling price or quantity
-    public Product (String name, String id, Double unitPrice, Double sellingPrice, int quantity) {
+    // EFFECTS: constructs a new product with given name, id and original unit
+    // price, no selling price or quantity
+    public Product(String name, String id, Double unitPrice, Double sellingPrice, int quantity) {
         this.name = name;
         this.id = id;
         this.sellingPrice = sellingPrice;
@@ -31,7 +32,7 @@ public class Product implements Writable {
         quantity += amount;
     }
 
-    // REQUIRES: amount > 0, amount <= quantity 
+    // REQUIRES: amount > 0, amount <= quantity
     // MODIFIES: this
     // EFFECTS: subtract amount from quantity
     public void sell(int amount) {
@@ -44,7 +45,7 @@ public class Product implements Writable {
         this.sellingPrice = sellingPrice;
     }
 
-    //REQUIRES: unitPrice > 0
+    // REQUIRES: unitPrice > 0
     // MODIFIES: this
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
@@ -59,21 +60,17 @@ public class Product implements Writable {
         return quantity;
     }
 
-
     public Double getSellingPrice() {
         return sellingPrice;
     }
-
 
     public Double getUnitPrice() {
         return unitPrice;
     }
 
-
     public String getName() {
         return name;
     }
-
 
     public String getId() {
         return id;
@@ -110,5 +107,4 @@ public class Product implements Writable {
         return Objects.equals(id, other.id) && Objects.equals(name, other.name);
     }
 
-    
 }
