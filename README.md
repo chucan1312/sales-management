@@ -18,3 +18,19 @@ This will be an application for small businesses to keep track of their store's 
 - As a user, I want to be able to load my inventory and purchase record (if I so choose)
 - As a user, I want to get statistics on high to low demand products (by month or quarter) [NOT FINISHED]
 - As a user, I want to get statistics on frequently returned products [NOT FINISHED]
+
+Phase 4: Task 2
+Fri Apr 04 12:00:49 PDT 2025
+Added new product to Inventory
+
+Fri Apr 04 12:00:49 PDT 2025
+Added new product to Inventory
+
+Fri Apr 04 12:00:49 PDT 2025
+Added new product to Inventory
+
+Fri Apr 04 12:00:55 PDT 2025
+Search for products by search term cake
+
+Phase 4: Task 3
+I might do some refactoring for all the menu classes in the GUI and add proper exception classes and handle that, because I have been handling exception with if statements instead of actually doing try catch, which is a bit messy. I'll do the refactoring for menu classes because the extends and implement the same interfaces and classes like MouseListener, WindowListener,...
