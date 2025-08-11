@@ -1,36 +1,42 @@
-# CPSC 210 Personal Project: Sales Management Application
+# 📂 CPSC 210 Personal Project: Sales Management Application
 
-## Overview
+A Java application that allows users to keep track of their store's sales and inventory. The program includes features to create, edit, and view lists of products and purchases, and all data is stored between sessions using a custom JSON persistence system built entirely with core Java (no external JSON libraries).
 
-This will be an application for small businesses to keep track of their store's sales and inventory. It can let you enter products' information such as their names, selling prices, most recent unit costs. It can also keep track of customers' purchases or returns, and method of payment. <br/>
+## ✨ Features
 
-## User stories
+- **Inventory Management** – Add new products with details (name, ID, cost), update existing items, and search by ID or keywords.
+- **Sales Recording** – Record purchases with date, sold items, and payment method; view purchase history by date range or filter by payment method.
+- **Business Insights** – Calculate total profit for a chosen time frame; planned features include demand and return statistics.
+- **Persistent Storage** – Save and load inventory and purchase records using a custom JSON persistence system built without external libraries.
 
-- As a user, I want to be able to add a product to the store's inventory and specify the name, unique id number and the recent import cost (per unit)
-- As a user, I want to be able to add a purchase to the purchase record and specify the date, sold item(s), and method of payment
-- As a user, I want to be able to view the list of purchases within given date range
-- As a user, I want to be able to view the list of unreviewed purchases with specified method of payment in one day
-- As a user, I want to be able to look up an item by its id
-- As a user, I want to be able to look up an item/list of items by the search terms
-- As a user, I want to be able to change a products' information in the inventory 
-- As a user, I want to get the total profit of the business within given date range
-- As a user, I want to be able to save my inventory and purchase record (if I so choose)
-- As a user, I want to be able to load my inventory and purchase record (if I so choose)
-- As a user, I want to get statistics on high to low demand products (by month or quarter) [NOT FINISHED]
-- As a user, I want to get statistics on frequently returned products [NOT FINISHED]
+## 🛠️ Technologies Used
 
-Phase 4: Task 2
-Fri Apr 04 12:00:49 PDT 2025
-Added new product to Inventory
+- Java 8+  
+- `java.io` & `java.nio.file` for file I/O  
+- String operations for JSON encoding/decoding  
+- JUnit (for testing, if applicable)
 
-Fri Apr 04 12:00:49 PDT 2025
-Added new product to Inventory
+## 🚀 Installation
 
-Fri Apr 04 12:00:49 PDT 2025
-Added new product to Inventory
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/chucan1312/cpsc-210-term-project.git
+    cd cpsc-210-term-project
+    ```
+2. Run the application:
+- Open the project in your IDE (IntelliJ, Eclipse, or VS Code with Java extensions).
+- Locate the `Main.java` file in `src/main/ui/`.
+- Right-click `Main.java` and choose **Run** (or use the Run button).
 
-Fri Apr 04 12:00:55 PDT 2025
-Search for products by search term cake
+3. Data files will be saved automatically in the `data/` directory.
 
-Phase 4: Task 3
-I might do some refactoring for all the menu classes in the GUI and add proper exception classes and handle that, because I have been handling exception with if statements instead of actually doing try catch, which is a bit messy. I'll do the refactoring for menu classes because the extends and implement the same interfaces and classes like MouseListener, WindowListener,...
+---
+
+## 📬 Author
+This is a personal project created by Chuc An Trinh for a course at UBC
+GitHub: https://github.com/chucan1312/cpsc-210-term-project
+
+
+📬 Contact
+Developed by Your Name.
+Feel free to open issues or suggestions for improvement.
