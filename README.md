@@ -6,13 +6,11 @@ A Java application that allows users to keep track of their store's sales and in
 
 - **Inventory Management** – Add new products with details (name, ID, cost), update existing items, and search by ID or keywords.
 - **Sales Recording** – Record purchases with date, sold items, and payment method; view purchase history by date range or filter by payment method.
-- **Business Insights** – Calculate total profit for a chosen time frame; planned features include demand and return statistics.
 - **Persistent Storage** – Save and load inventory and purchase records using a custom JSON persistence system built without external libraries.
 
 ## 🛠️ Technologies Used
 
-- Java 8+  
-- `java.io` & `java.nio.file` for file I/O  
+- Java 8+   
 - String operations for JSON encoding/decoding  
 - JUnit (for testing, if applicable)
 
