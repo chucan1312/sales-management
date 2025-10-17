@@ -31,6 +31,7 @@ A Java application that allows users to keep track of their store's sales and in
 ---
 
 ## 📬 Author
-This is a personal project created by Chuc An Trinh for a course at UBC
-GitHub: https://github.com/chucan1312/cpsc-210-term-project
+This is a personal project created by Chuc An Trinh for a course at UBC <br>
+trchan@student.ubc.ca <br>
+https://www.linkedin.com/in/an-trinh-891462332/
 
